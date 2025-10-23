@@ -1,0 +1,56 @@
+# ────────────────────────────────────────────────
+# 🧩 Repositório de Etiquetas e Promoções
+# Autor: Luan Sinn Sachetti
+# ────────────────────────────────────────────────
+
+# ── ⚙️ Credenciais e configs locais ─────────────
+.env
+.env.*
+*.env.local
+*.env.production
+repositorio-backend/config/service-account.json
+service-account.json
+*.key.json
+*.pem
+*.p12
+
+# ── 🗄️ Bancos de dados locais ───────────────────
+repositorio-backend/data/*
+!repositorio-backend/data/.gitkeep
+
+# ── ⚛️ Dependências e builds ─────────────────────
+node_modules/
+**/node_modules/
+repositorio-backend/dist/
+repositorio-frontend-react/dist/
+repositorio-backend/node_modules/
+repositorio-frontend-react/node_modules/
+build/
+.out/
+
+# ── 🧪 Logs / caches / reports ───────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.cache/
+.cache-loader/
+coverage/
+
+# ── 🖥️ Arquivos de SO e IDE ─────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── 🧱 Backups / testes / temporários ───────────
+*.bak
+*.old
+*.tmp
+*.zip
+*.tar
+*.7z

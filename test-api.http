@@ -1,0 +1,11 @@
+POST http://localhost:3000/api/public/login
+Content-Type: application/json
+
+{
+  "usuario": "apiuna01",
+  "senha": "1234"
+}
+
+###
+GET http://localhost:3000/api/public/promocoes/apiuna01
+Accept: application/json

@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    /* ✅ Modo moderno e otimizado */
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "moduleResolution": "Bundler",
+    "allowJs": false,
+
+    /* ✅ Suporte React 18 */
+    "jsx": "react-jsx",
+
+    /* ✅ Caminhos absolutos e verificação estrita */
+    "baseUrl": "./src",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* ✅ Interoperabilidade */
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "noEmit": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
