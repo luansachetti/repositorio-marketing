@@ -1,5 +1,5 @@
-// src/utils/api.ts
-const BASE_URL = "http://localhost:3000";
+
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Tipos genéricos usados em várias rotas
 export interface Usuario {
