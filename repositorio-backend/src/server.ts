@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import db from "./utils/db.js";
 import publicAuthRoutes from "./routes/public/publicAuthRoutes.js";
 import publicPromocoesRoutes from "./routes/public/publicPromocoesRoutes.js";
+import thumbProxyController from "./controllers/public/thumbProxyController.js";
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 // Rotas públicas
 app.use("/api/public", publicAuthRoutes);
 app.use("/api/public", publicPromocoesRoutes);
+app.use("/api/public", thumbProxyController);
 
 // Teste get
 app.get("/", (req, res) => {

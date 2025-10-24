@@ -1,6 +1,9 @@
 import db from "./db.js";
 import { listarArquivosDrive } from "./driveUtils.js";
 
+// URL base do backend (ajusta pro domínio do Render depois)
+const BACKEND_BASE = process.env.BACKEND_URL || "http://localhost:3000";
+
 // Sincroniza as promoções com o Google Drive
 async function syncDriveToDB() {
   console.log("Iniciando sincronização com o Google Drive...\n");
@@ -28,9 +31,17 @@ async function syncDriveToDB() {
     console.log(`${promo.nome} → ${promo.categoria}`);
     console.log(`   Pasta ID: ${promo.id_pasta}`);
 
-    const arquivos = await listarArquivosDrive(promo.id_pasta);
+    const arquivosOriginais = await listarArquivosDrive(promo.id_pasta);
+    console.log(`${arquivosOriginais.length} arquivos encontrados.\n`);
 
-    console.log(`${arquivos.length} arquivos encontrados.\n`);
+    // Cria nova lista de arquivos com proxy no campo "thumb"
+    const arquivos = arquivosOriginais.map((f) => ({
+      id: f.id || "",
+      nome: f.nome || "",
+      tipo: f.tipo || null,
+      link: f.link || null,
+      thumb: f.thumb || undefined,
+    }));
 
     // Atualiza o campo arquivos no banco
     await new Promise<void>((resolve, reject) => {

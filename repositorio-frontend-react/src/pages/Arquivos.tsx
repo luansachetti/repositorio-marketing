@@ -81,14 +81,14 @@ export default function Arquivos() {
   if (carregando)
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white">
-        <p className="text-lg font-medium">⏳ Carregando arquivos...</p>
+        <p className="text-lg font-medium">Carregando arquivos...</p>
       </div>
     );
 
   if (erro)
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white text-center p-6">
-        <p className="text-lg font-medium mb-4">⚠️ {erro}</p>
+        <p className="text-lg font-medium mb-4">{erro}</p>
         <Button label="Voltar" onClick={() => navigate(-1)} />
       </div>
     );
@@ -112,12 +112,21 @@ export default function Arquivos() {
                   key={a.nome}
                   className="bg-white/10 border border-white/20 rounded-xl shadow p-4 flex flex-col items-center text-center hover:bg-white/20 transition"
                 >
-                  {/* Miniatura */}
-                  {a.thumb_base64 ? (
+                  {/* Miniatura via Proxy */}
+                  {a.thumb ? (
                     <img
-                      src={`data:image/jpeg;base64,${a.thumb_base64}`}
+                      src={a.thumb}
                       alt={a.nome}
                       className="w-32 h-32 object-cover rounded-lg mb-3"
+                      onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        img.style.display = "none";
+
+                        const fallback = document.createElement("div");
+                        fallback.className =
+                          "w-32 h-32 flex items-center justify-center bg-gray-100 rounded-lg mb-3 text-gray-400 text-4xl";
+                        fallback.textContent = "📄";                        
+                      }}
                     />
                   ) : (
                     <div className="w-32 h-32 flex items-center justify-center bg-gray-100 rounded-lg mb-3 text-gray-400 text-4xl">

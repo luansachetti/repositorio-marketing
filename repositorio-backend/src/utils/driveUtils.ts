@@ -14,14 +14,16 @@ function getDriveClient() {
 // Lista arquivos de uma pasta (sem baixar binários)
 export async function listarArquivosDrive(folderId: string) {
   const drive = getDriveClient();
-  const base = process.env.BACKEND_URL || "https://SEU_BACKEND.koyeb.app";
+
+  // 👇 Usa o backend local por padrão
+  const base = process.env.BACKEND_URL || "http://localhost:3000";
+
   const arquivos: {
     id: string;
     nome: string;
     tipo: string | null;
     link: string | null;
-    // mantém a mesma chave que o front já usa:
-    thumb?: string; // agora será uma URL do proxy
+    thumb?: string; // agora será a URL do proxy leve
   }[] = [];
 
   try {
@@ -39,16 +41,21 @@ export async function listarArquivosDrive(folderId: string) {
       ).data;
 
       for (const f of res.files || []) {
-        // NÃO baixa mais nada aqui; só prepara o link do proxy
         const id = f.id || "";
-        const thumb = id ? `${base}/api/public/thumb/${id}` : undefined;
+        const thumbLink = f.thumbnailLink || null;
+
+        // 🔹 monta proxy leve com o link real
+        const thumb =
+          thumbLink !== null
+            ? `${base}/api/public/thumb?url=${encodeURIComponent(thumbLink)}`
+            : undefined;
 
         arquivos.push({
           id,
           nome: f.name || "",
           tipo: f.mimeType || null,
           link: f.webViewLink || null,
-          thumb, // ← o front vai usar <img src={thumb} />
+          thumb,
         });
       }
 
