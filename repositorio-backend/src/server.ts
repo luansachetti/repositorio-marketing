@@ -10,20 +10,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔗 Rotas públicas
+// Rotas públicas
 app.use("/api/public", publicAuthRoutes);
 app.use("/api/public", publicPromocoesRoutes);
 
-// teste get
+// Teste get
 app.get("/", (req, res) => {
   res.json({
     sucesso: true,
-    mensagem: "🚀 Servidor do Repositório de Promoções e Etiquetas ativo!",
+    mensagem: "Servidor do Repositório de Promoções e Etiquetas ativo!",
     rotas: ["/api/public/login", "/api/public/promocoes"]
   });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

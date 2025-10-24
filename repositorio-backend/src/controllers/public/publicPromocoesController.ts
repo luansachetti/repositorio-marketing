@@ -13,7 +13,7 @@ type Promocao = {
   ativo: number;
 };
 
-// 🔍 Lista promoções disponíveis para uma filial
+// Lista promoções disponíveis para uma filial
 export const listarPromocoesPorFilial = (req: Request, res: Response) => {
   const { filial } = req.params;
 
@@ -28,19 +28,19 @@ export const listarPromocoesPorFilial = (req: Request, res: Response) => {
 
   db.all<Promocao>(query, [], (err, rows) => {
     if (err) {
-      console.error("❌ Erro ao consultar promoções:", err.message);
+      console.error("Erro ao consultar promoções:", err.message);
       return res.status(500).json({
         sucesso: false,
         mensagem: "Erro interno ao buscar promoções.",
       });
     }
 
-    // 🔍 Filtra promoções que contenham a filial
+    // Filtra promoções que contenham a filial
     const filtradas = rows.filter((p) => {
       try {
         const lista = JSON.parse(p.usuarios_vinculados || "[]");
 
-        // ⚙️ Corrige caso venha como ["a,b,c"]
+        // Corrige caso venha como ["a,b,c"]
         const filiais =
           Array.isArray(lista) && lista.length === 1 && typeof lista[0] === "string"
             ? lista[0]
@@ -50,7 +50,7 @@ export const listarPromocoesPorFilial = (req: Request, res: Response) => {
 
         return Array.isArray(filiais) && filiais.includes(filial.toLowerCase());
       } catch (e) {
-        console.error("⚠️ Erro ao processar usuarios_vinculados:", e);
+        console.error("Erro ao processar usuarios_vinculados:", e);
         return false;
       }
     });

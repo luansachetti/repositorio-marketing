@@ -9,7 +9,7 @@ type Usuario = {
   ativo: number;
 };
 
-// 🔐 Controlador de login público
+// Controlador de login público
 export const publicLogin = (req: Request, res: Response) => {
   const { usuario, senha } = req.body;
 
@@ -28,7 +28,7 @@ export const publicLogin = (req: Request, res: Response) => {
 
   db.get<Usuario>(query, [usuario.toLowerCase(), senha], (err: Error | null, row: Usuario | undefined) => {
     if (err) {
-      console.error("❌ Erro ao consultar banco:", err.message);
+      console.error("Erro ao consultar banco:", err.message);
       return res.status(500).json({
         sucesso: false,
         mensagem: "Erro interno no servidor.",

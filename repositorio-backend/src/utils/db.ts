@@ -6,15 +6,15 @@ const dbPath = path.join(process.cwd(), "data", "repo.db");
 
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error("❌ Erro ao conectar ao SQLite:", err.message);
+    console.error("Erro ao conectar ao SQLite:", err.message);
   } else {
-    console.log("🗄️  Conectado ao SQLite:", dbPath);
+    console.log("Conectado ao SQLite:", dbPath);
   }
 });
 
 // Criação das tabelas (estrutura completa)
 db.serialize(() => {
-  // 🧍‍♂️ Tabela de usuários
+  // Tabela de usuários
   db.run(`
     CREATE TABLE IF NOT EXISTS usuarios (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +26,7 @@ db.serialize(() => {
     )
   `);
 
-  // 🎯 Tabela de promoções
+  // Tabela de promoções
   db.run(`
     CREATE TABLE IF NOT EXISTS promocoes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,7 +41,7 @@ db.serialize(() => {
     )
   `);
 
-  // 🏷️ Tabela de etiquetas (mesma estrutura)
+  // Tabela de etiquetas (mesma estrutura)
   db.run(`
     CREATE TABLE IF NOT EXISTS etiquetas (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
