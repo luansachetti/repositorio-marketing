@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Button from "../components/Button";
+import { loginUsuario } from "../utils/api";
 
 export default function Login() {
   const [usuario, setUsuario] = useState("");
@@ -18,13 +19,8 @@ export default function Login() {
     setCarregando(true);
 
     try {
-      const resposta = await fetch("http://localhost:3000/api/public/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuario, senha }),
-      });
-
-      const dados = await resposta.json();
+      
+      const dados = await loginUsuario(usuario, senha);
 
       if (!dados.sucesso) {
         setErro(dados.mensagem || "Usuário ou senha incorretos.");
