@@ -30,11 +30,11 @@ export interface Etiqueta extends Promocao {}
 // -------------------
 
 // 🔐 Login de filial/admin
-export async function loginUsuario(filial: string, senha: string) {
+export async function loginUsuario(usuario: string, senha: string) {
   const res = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ filial, senha }),
+    body: JSON.stringify({ usuario, senha }),
   });
 
   return res.json();
