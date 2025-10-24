@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import db from "../../utils/db.js";
+import { query } from "../../utils/query.js";
 
 type Usuario = {
   id: number;
@@ -9,8 +9,8 @@ type Usuario = {
   ativo: number;
 };
 
-// Controlador de login público
-export const publicLogin = (req: Request, res: Response) => {
+// 🔹 Controlador de login público
+export const publicLogin = async (req: Request, res: Response) => {
   const { usuario, senha } = req.body;
 
   if (!usuario || !senha) {
@@ -20,20 +20,15 @@ export const publicLogin = (req: Request, res: Response) => {
     });
   }
 
-  const query = `
-    SELECT id, usuario, nome_exibicao, tipo, ativo
-    FROM usuarios
-    WHERE usuario = ? AND senha = ?;
-  `;
+  try {
+    const sql = `
+      SELECT id, usuario, nome_exibicao, tipo, ativo
+      FROM usuarios
+      WHERE usuario = ? AND senha = ?;
+    `;
 
-  db.get<Usuario>(query, [usuario.toLowerCase(), senha], (err: Error | null, row: Usuario | undefined) => {
-    if (err) {
-      console.error("Erro ao consultar banco:", err.message);
-      return res.status(500).json({
-        sucesso: false,
-        mensagem: "Erro interno no servidor.",
-      });
-    }
+    const rows = await query(sql, [usuario.toLowerCase(), senha]);
+    const row = rows[0] as Usuario | undefined;
 
     if (!row) {
       return res.status(401).json({
@@ -53,5 +48,11 @@ export const publicLogin = (req: Request, res: Response) => {
       sucesso: true,
       usuario: row,
     });
-  });
+  } catch (err: any) {
+    console.error("Erro ao consultar banco:", err.message);
+    return res.status(500).json({
+      sucesso: false,
+      mensagem: "Erro interno no servidor.",
+    });
+  }
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import db from "../../utils/db.js";
+import { query } from "../../utils/query.js"; // ✅ usa helper universal
 
 type Promocao = {
   id: number;
@@ -13,8 +13,8 @@ type Promocao = {
   ativo: number;
 };
 
-// Lista promoções disponíveis para uma filial
-export const listarPromocoesPorFilial = (req: Request, res: Response) => {
+// 🔹 Lista promoções disponíveis para uma filial
+export const listarPromocoesPorFilial = async (req: Request, res: Response) => {
   const { filial } = req.params;
 
   if (!filial) {
@@ -24,18 +24,12 @@ export const listarPromocoesPorFilial = (req: Request, res: Response) => {
     });
   }
 
-  const query = `SELECT * FROM promocoes WHERE ativo = 1;`;
+  try {
+    // 🔸 Busca todas promoções ativas
+    const sql = `SELECT * FROM promocoes WHERE ativo = 1;`;
+    const rows = (await query(sql)) as Promocao[];
 
-  db.all<Promocao>(query, [], (err, rows) => {
-    if (err) {
-      console.error("Erro ao consultar promoções:", err.message);
-      return res.status(500).json({
-        sucesso: false,
-        mensagem: "Erro interno ao buscar promoções.",
-      });
-    }
-
-    // Filtra promoções que contenham a filial
+    // 🔸 Filtra promoções que contenham a filial
     const filtradas = rows.filter((p) => {
       try {
         const lista = JSON.parse(p.usuarios_vinculados || "[]");
@@ -63,6 +57,7 @@ export const listarPromocoesPorFilial = (req: Request, res: Response) => {
       });
     }
 
+    // 🔸 Resposta final formatada
     res.json({
       sucesso: true,
       total: filtradas.length,
@@ -74,5 +69,11 @@ export const listarPromocoesPorFilial = (req: Request, res: Response) => {
         arquivos: JSON.parse(p.arquivos || "[]"),
       })),
     });
-  });
+  } catch (err: any) {
+    console.error("Erro ao consultar promoções:", err.message);
+    return res.status(500).json({
+      sucesso: false,
+      mensagem: "Erro interno ao buscar promoções.",
+    });
+  }
 };
