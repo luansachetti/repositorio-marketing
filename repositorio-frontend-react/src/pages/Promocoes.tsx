@@ -26,7 +26,7 @@ export default function Promocoes() {
   useEffect(() => {
     async function carregar() {
       try {
-        const backendUrl = process.env.BACKEND_URL || 'http://localhost:3000';
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
         const resposta = await fetch(
           `${backendUrl}/api/public/promocoes/${usuario?.usuario}`
         );
