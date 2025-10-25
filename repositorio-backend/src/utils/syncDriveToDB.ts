@@ -5,7 +5,7 @@ console.log("Iniciando sincronização com o Google Drive...\n");
 
 async function syncDriveToDB() {
   try {
-    // 🔹 Busca promoções com ID de pasta
+    // Busca promoções com ID de pasta
     const promocoes = await query(
       "SELECT id, nome, categoria, id_pasta FROM promocoes WHERE ativo = 1 AND id_pasta IS NOT NULL"
     );
@@ -15,7 +15,7 @@ async function syncDriveToDB() {
       return;
     }
 
-    // 🔹 Percorre cada promoção
+    // Percorre cada promoção
     for (const promo of promocoes) {
       if (!promo.id_pasta) continue;
 
@@ -25,7 +25,7 @@ async function syncDriveToDB() {
       const arquivosOriginais = await listarArquivosDrive(promo.id_pasta);
       console.log(`${arquivosOriginais.length} arquivos encontrados.\n`);
 
-      // 🔹 Cria nova lista de arquivos com proxy no campo "thumb"
+      // Cria nova lista de arquivos com proxy no campo "thumb"
       const arquivos = arquivosOriginais.map((f) => ({
         id: f.id || "",
         nome: f.nome || "",
@@ -34,16 +34,16 @@ async function syncDriveToDB() {
         thumb: f.thumb || undefined,
       }));
 
-      // 🔹 Atualiza o campo arquivos no banco
+      // Atualiza o campo arquivos no banco
       await run("UPDATE promocoes SET arquivos = ? WHERE id = ?", [
         JSON.stringify(arquivos),
         promo.id,
       ]);
     }
 
-    console.log("✅ Sincronização concluída com sucesso!");
+    console.log("Sincronização concluída com sucesso!");
   } catch (e: any) {
-    console.error("❌ Erro geral na sincronização:", e.message);
+    console.error("Erro geral na sincronização:", e.message);
   }
 }
 

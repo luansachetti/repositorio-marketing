@@ -16,7 +16,7 @@ export default function Categorias() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 👇 Recebe o grupo selecionado da tela anterior
+  // Recebe o grupo selecionado da tela anterior
   const { grupo } = (location.state as { grupo: string }) || { grupo: "" };
 
   const [categorias, setCategorias] = useState<string[]>([]);
@@ -44,7 +44,7 @@ export default function Categorias() {
 
         const promocoes = dados.promocoes as Promocao[];
 
-        // ✅ Pega apenas as categorias do grupo selecionado
+        // Pega apenas as categorias do grupo selecionado
         const categoriasUnicas = [
           ...new Set(
             promocoes
@@ -67,14 +67,14 @@ export default function Categorias() {
   if (carregando)
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white">
-        <p className="text-lg font-medium">⏳ Carregando categorias...</p>
+        <p className="text-lg font-medium">Carregando categorias...</p>
       </div>
     );
 
   if (erro)
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white text-center p-6">
-        <p className="text-lg font-medium mb-4">⚠️ {erro}</p>
+        <p className="text-lg font-medium mb-4">{erro}</p>
         <Button label="Voltar" onClick={() => navigate(-1)} />
       </div>
     );

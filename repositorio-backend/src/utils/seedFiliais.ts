@@ -1,6 +1,6 @@
 import { query, run } from "./query.js";
 
-console.log("🔍 Sincronizando usuários com base nas promoções...");
+console.log("Sincronizando usuários com base nas promoções...");
 
 async function syncUsuarios() {
   try {
@@ -9,7 +9,7 @@ async function syncUsuarios() {
 
     const set = new Set<string>();
 
-    // 🧠 Extrai nomes únicos de usuários das promoções
+    // Extrai nomes únicos de usuários das promoções
     for (const r of promocoes) {
       try {
         const lista = JSON.parse(r.usuarios_vinculados || "[]");
@@ -24,16 +24,16 @@ async function syncUsuarios() {
           });
         }
       } catch (e) {
-        console.warn("⚠️ Erro ao processar uma linha de usuarios_vinculados:", e);
+        console.warn("Erro ao processar uma linha de usuarios_vinculados:", e);
       }
     }
 
     const filiais = Array.from(set);
-    console.log(`📦 ${filiais.length} filiais detectadas no banco:`);
+    console.log(`${filiais.length} filiais detectadas no banco:`);
 
     let inseridas = 0;
 
-    // 🔹 Verifica e insere novas filiais
+    // Verifica e insere novas filiais
     for (const filial of filiais) {
       const existentes = await query(
         "SELECT id FROM usuarios WHERE usuario = ?",
@@ -55,16 +55,16 @@ async function syncUsuarios() {
             [filial, nomeExibicao.trim(), "1234", "filial"]
           );
           inseridas++;
-          console.log(`➕ Inserida: ${filial}`);
+          console.log(`Inserida: ${filial}`);
         } catch (err: any) {
-          console.error("❌ Erro ao inserir:", err.message);
+          console.error("Erro ao inserir:", err.message);
         }
       }
     }
 
-    console.log(`✅ Inserção concluída (${inseridas} novas filiais adicionadas).`);
+    console.log(`Inserção concluída (${inseridas} novas filiais adicionadas).`);
   } catch (err: any) {
-    console.error("❌ Erro ao ler promoções:", err.message);
+    console.error("Erro ao ler promoções:", err.message);
     process.exit(1);
   }
 }

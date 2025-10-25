@@ -15,7 +15,7 @@ function getDriveClient() {
 export async function listarArquivosDrive(folderId: string) {
   const drive = getDriveClient();
 
-  // 👇 Usa o backend local por padrão
+  // Usa o backend local por padrão
   const base = process.env.BACKEND_URL || "http://localhost:3000";
 
   const arquivos: {

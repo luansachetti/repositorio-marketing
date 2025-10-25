@@ -3,7 +3,7 @@ import axios from "axios";
 
 const router = express.Router();
 
-// 🔹 Proxy leve e seguro para miniaturas do Google Drive
+// Proxy leve e seguro para miniaturas do Google Drive
 router.get("/thumb", async (req, res) => {
   const { url } = req.query;
 
@@ -15,10 +15,10 @@ router.get("/thumb", async (req, res) => {
   }
 
   try {
-    // Faz o download via streaming (sem salvar em disco)
+    // Faz o download via streaming
     const response = await axios.get(url, { responseType: "stream" });
 
-    // Define o tipo da imagem — Drive costuma servir JPEG
+    // Define o tipo da imagem
     res.setHeader("Content-Type", "image/jpeg");
 
     // Envia os bytes diretamente para o cliente

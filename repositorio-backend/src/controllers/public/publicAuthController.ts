@@ -9,7 +9,7 @@ type Usuario = {
   ativo: number;
 };
 
-// 🔹 Controlador de login público
+// Controlador de login público
 export const publicLogin = async (req: Request, res: Response) => {
   const { usuario, senha } = req.body;
 

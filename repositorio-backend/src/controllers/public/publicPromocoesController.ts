@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { query } from "../../utils/query.js"; // ✅ usa helper universal
+import { query } from "../../utils/query.js";
 
 type Promocao = {
   id: number;
@@ -8,12 +8,12 @@ type Promocao = {
   grupo: string;
   categoria: string;
   id_pasta: string | null;
-  usuarios_vinculados: string; // JSON string
-  arquivos: string; // JSON string
+  usuarios_vinculados: string;
+  arquivos: string;
   ativo: number;
 };
 
-// 🔹 Lista promoções disponíveis para uma filial
+// Lista promoções disponíveis para uma filial
 export const listarPromocoesPorFilial = async (req: Request, res: Response) => {
   const { filial } = req.params;
 
@@ -25,11 +25,11 @@ export const listarPromocoesPorFilial = async (req: Request, res: Response) => {
   }
 
   try {
-    // 🔸 Busca todas promoções ativas
+    // Busca todas promoções ativas
     const sql = `SELECT * FROM promocoes WHERE ativo = 1;`;
     const rows = (await query(sql)) as Promocao[];
 
-    // 🔸 Filtra promoções que contenham a filial
+    // Filtra promoções que contenham a filial
     const filtradas = rows.filter((p) => {
       try {
         const lista = JSON.parse(p.usuarios_vinculados || "[]");
@@ -57,7 +57,7 @@ export const listarPromocoesPorFilial = async (req: Request, res: Response) => {
       });
     }
 
-    // 🔸 Resposta final formatada
+    // Resposta final formatada
     res.json({
       sucesso: true,
       total: filtradas.length,

@@ -1,7 +1,7 @@
 import db, { isRemote } from "./db.js";
 
 export async function query(sql: string, params: any[] = []): Promise<any[]> {
-  // 🌐 Se estiver usando Turso (libSQL)
+  // Se estiver usando Turso (libSQL)
   if (isRemote) {
     const res = await (db as any).execute({
       sql,
@@ -10,7 +10,7 @@ export async function query(sql: string, params: any[] = []): Promise<any[]> {
     return res.rows;
   }
 
-  // 💾 Se estiver usando SQLite local
+  // Se estiver usando SQLite local
   return new Promise((resolve, reject) => {
     (db as any).all(sql, params, (err: any, rows: any[]) => {
       if (err) reject(err);

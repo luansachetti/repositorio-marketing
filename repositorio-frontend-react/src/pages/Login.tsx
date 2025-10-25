@@ -86,7 +86,7 @@ export default function Login() {
 
           {erro && (
             <p className="text-red-200 text-center text-sm font-semibold">
-              ⚠️ {erro}
+              {erro}
             </p>
           )}
 

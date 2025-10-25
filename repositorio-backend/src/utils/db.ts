@@ -6,25 +6,25 @@ import { createClient, Client } from "@libsql/client";
 const isRemote = !!process.env.TURSO_DATABASE_URL;
 let db: Client | sqlite3.Database;
 
-// 🔹 Banco remoto (Turso via libSQL)
+// Banco remoto (Turso via libSQL)
 if (isRemote) {
-  console.log("🌐 Conectando ao banco remoto (Turso via libSQL)...");
+  console.log("Conectando ao banco remoto (Turso via libSQL)...");
 
   db = createClient({
     url: process.env.TURSO_DATABASE_URL!,
     authToken: process.env.TURSO_AUTH_TOKEN,
   });
 
-  console.log("✅ Conectado ao Turso (libSQL). Nenhuma criação de tabela local será feita.");
+  console.log("Conectado ao Turso (libSQL). Nenhuma criação de tabela local será feita.");
 
-// 🔹 Banco local (SQLite)
+// Banco local (SQLite)
 } else {
   const dbPath = path.join(process.cwd(), "data", "repo.db");
   db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-      console.error("❌ Erro ao conectar ao SQLite:", err.message);
+      console.error("Erro ao conectar ao SQLite:", err.message);
     } else {
-      console.log("💾 Conectado ao SQLite local:", dbPath);
+      console.log("Conectado ao SQLite local:", dbPath);
     }
   });
 
