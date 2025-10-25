@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { buscarPromocoes } from "utils/api";
+import { buscarPromocoes } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Button from "../components/Button";
@@ -27,7 +27,7 @@ export default function Promocoes() {
   useEffect(() => {
     async function carregar() {
       try {
-        
+
         const dados = await buscarPromocoes(usuario?.usuario || "default");
 
         if (!dados.sucesso) {

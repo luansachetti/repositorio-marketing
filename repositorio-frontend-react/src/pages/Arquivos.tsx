@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { buscarPromocoes } from "utils/api";
+import { buscarPromocoes } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Button from "../components/Button";
