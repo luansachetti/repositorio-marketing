@@ -1,4 +1,3 @@
-
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Tipos genéricos usados em várias rotas
@@ -29,7 +28,7 @@ export interface Etiqueta extends Promocao {}
 // FUNÇÕES PÚBLICAS
 // -------------------
 
-// 🔐 Login de filial/admin
+// Login de filial/admin
 export async function loginUsuario(usuario: string, senha: string) {
   const res = await fetch(`${BASE_URL}/login`, {
     method: "POST",
@@ -40,19 +39,19 @@ export async function loginUsuario(usuario: string, senha: string) {
   return res.json();
 }
 
-// 🎯 Promoções da filial
+// Promoções da filial
 export async function buscarPromocoes(filial: string) {
   const res = await fetch(`${BASE_URL}/promocoes/${filial}`);
   return res.json();
 }
 
-// 🏷️ Etiquetas da filial
+// Etiquetas da filial
 export async function buscarEtiquetas(filial: string) {
   const res = await fetch(`${BASE_URL}/etiquetas/${filial}`);
   return res.json();
 }
 
-// 🧩 Função genérica de GET (pode usar para admin futuramente)
+// Função genérica de GET (pode usar para admin futuramente)
 export async function get<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${BASE_URL}${endpoint}`);
   if (!res.ok) throw new Error("Erro ao acessar API");
