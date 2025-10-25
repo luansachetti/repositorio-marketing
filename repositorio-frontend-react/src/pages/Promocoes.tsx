@@ -26,8 +26,9 @@ export default function Promocoes() {
   useEffect(() => {
     async function carregar() {
       try {
+        const backendUrl = process.env.BACKEND_URL || 'http://localhost:3000';
         const resposta = await fetch(
-          `http://localhost:3000/api/public/promocoes/${usuario?.usuario}`
+          `${backendUrl}/api/public/promocoes/${usuario?.usuario}`
         );
         const dados = await resposta.json();
 
@@ -35,7 +36,7 @@ export default function Promocoes() {
           setErro(dados.mensagem || "Nenhuma promoção disponível.");
           setPromocoes([]);
         } else {
-          // ✅ Agrupar por grupo (para não repetir várias categorias)
+          // Agrupar por grupo (para não repetir várias categorias)
           const gruposUnicos: { [key: string]: Promocao } = {};
           (dados.promocoes as Promocao[]).forEach((p) => {
             if (!gruposUnicos[p.grupo]) {
@@ -58,14 +59,14 @@ export default function Promocoes() {
   if (carregando)
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white">
-        <p className="text-lg font-medium">⏳ Carregando promoções...</p>
+        <p className="text-lg font-medium">Carregando promoções...</p>
       </div>
     );
 
   if (erro)
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white text-center p-6">
-        <p className="text-lg font-medium mb-4">⚠️ {erro}</p>
+        <p className="text-lg font-medium mb-4">{erro}</p>
         <Button label="Voltar" onClick={() => navigate(-1)} />
       </div>
     );

@@ -43,8 +43,9 @@ export default function Arquivos() {
 
     async function carregarArquivos() {
       try {
+        const backendUrl = process.env.BACKEND_URL || 'http://localhost:3000';
         const resposta = await fetch(
-          `http://localhost:3000/api/public/promocoes/${usuario?.usuario}`
+          `${backendUrl}/api/public/promocoes/${usuario?.usuario}`
         );
         const dados = await resposta.json();
 
