@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { syncDriveToDB } from "./utils/syncDriveToDB.js";
 
 dotenv.config();
 
@@ -29,14 +30,25 @@ app.use("/api/public", thumbProxyController);
 
 // Teste get
 app.get("/", (req, res) => {
-  res.json({
-    sucesso: true,
-    mensagem: "Servidor do Repositório de Promoções e Etiquetas ativo!",
-    rotas: ["/api/public/login", "/api/public/promocoes"]
-  });
+    res.json({
+        sucesso: true,
+        mensagem: "Servidor do Repositório de Promoções e Etiquetas ativo!",
+        rotas: ["/api/public/login", "/api/public/promocoes"]
+    });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em ${PORT}`);
-});
+
+
+// LÓGICA DE INICIALIZAÇÃO
+async function startServer() {
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando em ${PORT}`);
+        console.log("Iniciando rotina de sincronização do Google Drive (cache DB)...");
+        syncDriveToDB().catch(e => {
+            console.error("Erro na rotina de sincronização:", e.message);
+        });
+    });
+}
+
+startServer();

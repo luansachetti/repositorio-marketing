@@ -3,7 +3,7 @@ import { listarArquivosDrive } from "./driveUtils.js";
 
 console.log("Iniciando sincronização com o Google Drive...\n");
 
-async function syncDriveToDB() {
+export async function syncDriveToDB() {
   try {
     // Busca promoções com ID de pasta
     const promocoes = await query(
