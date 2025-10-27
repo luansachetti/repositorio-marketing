@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Button from "../components/Button";
+import Footer from "../components/Footer";
 
 export default function Menu() {
   const navigate = useNavigate();
@@ -18,13 +19,7 @@ export default function Menu() {
           </h1>
 
           <div className="flex flex-col gap-4">
-            {/* Botão PROMOÇÕES */}
-            <Button
-              label="Promoções"
-              onClick={() => navigate("/promocoes")}
-            />
-
-            {/* Botão ETIQUETAS */}
+            <Button label="Promoções" onClick={() => navigate("/promocoes")} />
             <Button
               label="Etiquetas"
               onClick={() => navigate("/etiquetas")}
@@ -37,6 +32,8 @@ export default function Menu() {
           </p>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

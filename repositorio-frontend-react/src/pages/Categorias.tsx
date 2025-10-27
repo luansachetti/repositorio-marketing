@@ -4,6 +4,7 @@ import { buscarPromocoes } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Button from "../components/Button";
+import Footer from "../components/Footer";
 
 type Promocao = {
   id: number;
@@ -110,6 +111,8 @@ export default function Categorias() {
           </button>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Button from "../components/Button";
 import { loginUsuario } from "../utils/api";
+import Footer from "../components/Footer";
 
 export default function Login() {
   const [usuario, setUsuario] = useState("");
@@ -98,9 +99,7 @@ export default function Login() {
         </form>
       </div>
 
-      <footer className="mt-8 text-xs text-white/70 text-center">
-        © {new Date().getFullYear()} Repositório de Etiquetas e Promoções
-      </footer>
+      <Footer />
     </div>
   );
 }
