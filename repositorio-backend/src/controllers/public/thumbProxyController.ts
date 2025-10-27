@@ -1,7 +1,7 @@
 // /api/public/thumb (seu arquivo de rota)
 
 import express from "express";
-import { getDriveClient } from "../../utils/driveUtils";
+import { getDriveClient } from "../../utils/driveUtils.js";
 import { drive_v3 } from "googleapis";
 
 const router = express.Router();
