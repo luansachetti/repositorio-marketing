@@ -44,7 +44,7 @@ export async function listarArquivosDrive(folderId: string) {
         const id = f.id || "";
         const thumbLink = f.thumbnailLink || null;
 
-        // 🔹 monta proxy leve com o link real
+        // monta proxy leve com o link real
         const thumb =
           thumbLink !== null
             ? `${base}/api/public/thumb?url=${encodeURIComponent(thumbLink)}`
