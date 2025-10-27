@@ -14,6 +14,9 @@ function getDriveClient() {
   let credentials;
   try {
     credentials = JSON.parse(GOOGLE_PRIVATE_KEY); 
+    if (credentials.private_key) {
+      credentials.private_key = credentials.private_key.replace(/\\n/g, '\n')
+    }
   } catch (e) {
     console.error("Erro ao fazer parse do JSON de credenciais do Google Drive.");
     throw e;
