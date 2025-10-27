@@ -1,35 +1,52 @@
+// /api/public/thumb (seu arquivo de rota)
+
 import express from "express";
-import axios from "axios";
+import { getDriveClient } from "../../utils/driveUtils";
+import { drive_v3 } from "googleapis";
 
 const router = express.Router();
 
-// Proxy leve e seguro para miniaturas do Google Drive
+// Proxy para miniaturas do Google Drive
 router.get("/thumb", async (req, res) => {
-  const { url } = req.query;
+    const { fileId } = req.query;
 
-  if (!url || typeof url !== "string") {
-    return res.status(400).json({
-      sucesso: false,
-      mensagem: "URL da miniatura ausente.",
-    });
-  }
+    if (!fileId || typeof fileId !== "string") {
+        return res.status(400).json({
+            sucesso: false,
+            mensagem: "ID do arquivo (fileId) da miniatura ausente.",
+        });
+    }
 
-  try {
-    // Faz o download via streaming
-    const response = await axios.get(url, { responseType: "stream" });
+    try {
+        const drive = getDriveClient();
 
-    // Define o tipo da imagem
-    res.setHeader("Content-Type", "image/jpeg");
+        const response = await drive.files.get({
+            fileId: fileId,
+            alt: 'media',
+        }, { 
+            responseType: 'stream'
+        });
 
-    // Envia os bytes diretamente para o cliente
-    (response.data as any).pipe(res);
-  } catch (error: any) {
-    console.error("Erro ao obter miniatura:", error.message);
-    res.status(404).json({
-      sucesso: false,
-      mensagem: "Miniatura não encontrada ou acesso negado.",
-    });
-  }
+        const contentType = response.headers['content-type'] || 'image/jpeg';
+        const contentLength = response.headers['content-length'] || '';
+
+        res.setHeader("Content-Type", contentType);
+        if (contentLength) {
+            res.setHeader("Content-Length", contentLength);
+        }
+
+        response.data.pipe(res);
+
+    } catch (error: any) {
+        console.error("Erro ao obter miniatura via Drive API:", error.message);
+        
+        const statusCode = error.response?.status || 500;
+        
+        res.status(statusCode).json({
+            sucesso: false,
+            mensagem: `Erro ao obter miniatura. Status: ${statusCode}.`,
+        });
+    }
 });
 
 export default router;
