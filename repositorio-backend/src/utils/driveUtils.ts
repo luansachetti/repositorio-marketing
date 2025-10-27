@@ -64,12 +64,15 @@ export async function listarArquivosDrive(folderId: string) {
                 const thumb = id
                     ? `${base}/api/public/thumb?fileId=${id}` 
                     : undefined;
-
+                
+                const downloadLink = id
+                    ? '${base}/api/public/download?fileID=${id}'
+                    : f.webViewLink || null;
                 arquivos.push({
                     id,
                     nome: f.name || "",
                     tipo: f.mimeType || null,
-                    link: f.webViewLink || null,
+                    link: downloadLink,
                     thumb,
                 });
             }
