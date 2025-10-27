@@ -66,7 +66,7 @@ export async function listarArquivosDrive(folderId: string) {
                     : undefined;
                 
                 const downloadLink = id
-                    ? '${base}/api/public/download?fileId=${id}'
+                    ? `${base}/api/public/download?fileId=${id}`
                     : f.webViewLink || null;
                 arquivos.push({
                     id,
