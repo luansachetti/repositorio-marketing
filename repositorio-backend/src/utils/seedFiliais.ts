@@ -4,7 +4,7 @@ console.log("Sincronizando usuários com base nas promoções...");
 
 async function syncUsuarios() {
   try {
-    // 🔹 Consulta todas as promoções
+    // Consulta todas as promoções
     const promocoes = await query("SELECT usuarios_vinculados FROM promocoes");
 
     const set = new Set<string>();

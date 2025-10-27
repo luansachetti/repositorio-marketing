@@ -4,7 +4,6 @@ import { Buffer } from "buffer";
 const BASE64_STRING = process.env.GOOGLE_CREDENTIALS_BASE64;
 
 // FUNÇÃO DE AUTENTICAÇÃO
-
 function getDriveClient() {
     if (!BASE64_STRING) {
         throw new Error("Credenciais do Google Drive (Base64) não encontradas!");
