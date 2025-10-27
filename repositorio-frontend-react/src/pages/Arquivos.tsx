@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Button from "../components/Button";
 
-// 🔹 Estrutura dos arquivos
+// Estrutura dos arquivos
 type Arquivo = {
   nome: string;
   link: string;
@@ -13,7 +13,7 @@ type Arquivo = {
   thumb_base64?: string;
 };
 
-// 🔹 Estrutura das promoções
+// Estrutura das promoções
 type Promocao = {
   id: number;
   grupo: string;

@@ -1,13 +1,30 @@
 import { google, drive_v3 } from "googleapis";
-import path from "path";
 
-const SERVICE_ACCOUNT_PATH = path.resolve("./config/service-account.json");
+// const SERVICE_ACCOUNT_PATH = path.resolve("./config/service-account.json");
+
+const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
 
 function getDriveClient() {
+  // 2. Verifica se a credencial existe
+  if (!GOOGLE_PRIVATE_KEY) {
+    throw new Error("Credenciais do Google Drive não encontradas nas variáveis de ambiente!");
+  }
+
+  // 3. Converte a string JSON em objeto
+  let credentials;
+  try {
+    credentials = JSON.parse(GOOGLE_PRIVATE_KEY); 
+  } catch (e) {
+    console.error("Erro ao fazer parse do JSON de credenciais do Google Drive.");
+    throw e;
+  }
+
+  // 4. Autentica usando as credenciais
   const auth = new google.auth.GoogleAuth({
-    keyFile: SERVICE_ACCOUNT_PATH,
+    credentials,
     scopes: ["https://www.googleapis.com/auth/drive.readonly"],
   });
+  
   return google.drive({ version: "v3", auth });
 }
 
