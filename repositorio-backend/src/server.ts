@@ -39,7 +39,6 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-
 // LÓGICA DE INICIALIZAÇÃO
 async function startServer() {
     app.listen(PORT, () => {
