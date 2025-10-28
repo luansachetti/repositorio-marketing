@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { buscarEtiquetas } from "../utils/api"; 
 import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Button from "../components/Button";
-import { buscarEtiquetas } from "../utils/api"; 
 
 type Etiqueta = {
   id: number;
@@ -26,13 +26,9 @@ export default function Etiquetas() {
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    if (!usuario) {
-        navigate("/login");
-        return;
-    }
-    
     async function carregar() {
       try {
+        
         const dados: EtiquetaApiResponse = await buscarEtiquetas(); 
 
         if (!dados.sucesso || !dados.etiquetas) {
