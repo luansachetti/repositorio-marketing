@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { syncDriveToDB } from "./utils/syncDriveToDB.js";
+import { syncEtiquetasToDB } from "./utils/syncEtiquetasToDB.js";
 
 dotenv.config();
 
@@ -45,10 +46,16 @@ const PORT = process.env.PORT || 3000;
 async function startServer() {
     app.listen(PORT, () => {
         console.log(`Servidor rodando em ${PORT}`);
-        console.log("Iniciando rotina de sincronização do Google Drive (cache DB)...");
+        console.log("Iniciando rotinas de sincronização...");
+
         syncDriveToDB().catch(e => {
-            console.error("Erro na rotina de sincronização:", e.message);
+            console.error("Erro na rotina de Promoções:", e.message);
         });
+
+        syncEtiquetasToDB().catch(e => {
+            console.error("Erro na rotina de Etiquetas:", e.message);
+        })
+
     });
 }
 

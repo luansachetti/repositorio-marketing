@@ -30,6 +30,7 @@ if (isRemote) {
 
   // Criação das tabelas apenas no ambiente local
   (db as sqlite3.Database).serialize(() => {
+
     // Usuários
     (db as sqlite3.Database).run(`
       CREATE TABLE IF NOT EXISTS usuarios (
@@ -61,14 +62,10 @@ if (isRemote) {
     (db as sqlite3.Database).run(`
       CREATE TABLE IF NOT EXISTS etiquetas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        tipo TEXT,
-        nome TEXT,
-        grupo TEXT,
-        categoria TEXT,
-        id_pasta TEXT,
-        usuarios_vinculados TEXT,
-        arquivos TEXT,
-        ativo INTEGER DEFAULT 1
+        nome_categoria TEXT NOT NULL,
+        file_id TEXT NOT NULL,
+        file_name TEXT,
+        link_download TEXT
       )
     `);
   });
