@@ -1,10 +1,14 @@
-// /api/public/thumb (seu arquivo de rota)
+// thumbProxyController.ts
 
 import express from "express";
+import axios from "axios";
 import { getDriveClient } from "../../utils/driveUtils.js";
-import { drive_v3 } from "googleapis";
+import { Readable } from 'stream';
 
 const router = express.Router();
+
+// Define o tamanho da miniatura desejado
+const THUMBNAIL_SIZE = 100; 
 
 // Proxy para miniaturas do Google Drive
 router.get("/thumb", async (req, res) => {
@@ -20,26 +24,52 @@ router.get("/thumb", async (req, res) => {
     try {
         const drive = getDriveClient();
 
-        const response = await drive.files.get({
+        // PASSO 1: Obter o link da miniatura (thumbnailLink)
+        const metadataResponse = await drive.files.get({
             fileId: fileId,
-            alt: 'media',
-        }, { 
+            fields: "thumbnailLink, mimeType" 
+        });
+
+        const linkOriginal = metadataResponse.data.thumbnailLink;
+
+        if (!linkOriginal) {
+            return res.status(404).json({
+                sucesso: false,
+                mensagem: "Miniatura não disponível para este arquivo.",
+            });
+        }
+        
+        // PASSO 2: Manipular o link para definir a resolução desejada
+        let linkRedimensionado = linkOriginal;
+
+        if (linkRedimensionado.match(/=s\d+/)) {
+            linkRedimensionado = linkRedimensionado.replace(/=s\d+/, `=s${THUMBNAIL_SIZE}`);
+        } else {
+            linkRedimensionado += `=s${THUMBNAIL_SIZE}`;
+        }
+
+        // PASSO 3: FAZER A REQUISIÇÃO DE SERVIDOR PARA SERVIDOR
+        const thumbnailResponse = await axios.get(linkRedimensionado, {
             responseType: 'stream'
         });
 
-        const contentType = response.headers['content-type'] || 'image/jpeg';
-        const contentLength = response.headers['content-length'] || '';
+        // O stream do axios é repassado diretamente para a resposta
+        const thumbnailStream = thumbnailResponse.data as Readable;
+
+        // PASSO 4: Repassar os headers e o stream para o cliente (browser)
+        const contentType = thumbnailResponse.headers['content-type'] || 'image/jpeg';
+        const contentLength = thumbnailResponse.headers['content-length'];
 
         res.setHeader("Content-Type", contentType);
         if (contentLength) {
             res.setHeader("Content-Length", contentLength);
         }
 
-        response.data.pipe(res);
+        thumbnailStream.pipe(res);
 
     } catch (error: any) {
-        console.error("Erro ao obter miniatura via Drive API:", error.message);
-        
+        // ... (resto da lógica de erro)
+        console.error("Erro ao obter miniatura via Proxy:", error.message);
         const statusCode = error.response?.status || 500;
         
         res.status(statusCode).json({

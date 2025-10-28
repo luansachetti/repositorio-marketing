@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.15.15",
-    "axios": "^1.12.2",
+    "axios": "^1.13.0",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
