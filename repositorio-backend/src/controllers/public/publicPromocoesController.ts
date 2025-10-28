@@ -66,6 +66,7 @@ export const listarPromocoesPorFilial = async (req: Request, res: Response) => {
         nome: p.nome,
         grupo: p.grupo,
         categoria: p.categoria,
+        ativo: p.ativo,
         arquivos: JSON.parse(p.arquivos || "[]"),
       })),
     });
