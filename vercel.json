@@ -5,7 +5,7 @@
       "src": "repositorio-frontend-react/package.json", 
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "repositorio-frontend-react/dist" 
+        "distDir": "dist" 
       }
     },
     {
