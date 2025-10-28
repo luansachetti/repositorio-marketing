@@ -11,6 +11,7 @@ type Promocao = {
   nome: string;
   grupo: string;
   categoria: string;
+  ativo: number;
   arquivos: {
     nome: string;
     link: string;
@@ -84,15 +85,22 @@ export default function Promocoes() {
             <p className="text-orange-100">Nenhuma promoção disponível.</p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
-              {promocoes.map((p) => (
+              {promocoes.map((p) => {
+                const isDesativada = p.ativo === 0;
+
+                return (
                 <Button
                   key={p.id}
                   label={p.nome}
-                  onClick={() =>
+                  disabled={isDesativada}
+                  onClick={() => {
+                    if (isDesativada) return;
                     navigate("/categorias", { state: { grupo: p.grupo } })
-                  }
+                  }}
+                  className={isDesativada ? "opacity-50 cursor-not-allowed" : ""}
                 />
-              ))}
+              );
+            })}
             </div>
           )}
 
