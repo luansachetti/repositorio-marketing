@@ -11,14 +11,28 @@ console.log("Iniciando sincronização de Etiquetas com o Google Drive...\n");
 
 export async function syncEtiquetasToDB() {
     if (!DRIVE_FOLDER_ETIQUETAS) {
-        console.error("Variável ETIQUETAS_ROOT_FOLDER_ID não configurada. Pulando sincronização de etiquetas.");
+        console.error("Variável DRIVE_FOLDER_ETIQUETAS não configurada. Pulando sincronização de etiquetas.");
         return;
     }
     
     const drive = getDriveClient();
-    
+
     try {
-        // PASSO 1: Buscar Subpastas
+        // APAGAR E CRIAR TABELA COM O NOVO ESQUEMA (FORÇA A CORREÇÃO)
+        console.log("Forçando atualização do esquema da tabela 'etiquetas'...");
+        await run("DROP TABLE IF EXISTS etiquetas");
+        await run(`
+            CREATE TABLE etiquetas (
+                id INTEGER PRIMARY KEY,
+                nome_categoria TEXT NOT NULL,
+                file_id TEXT NOT NULL,
+                file_name TEXT,
+                link_download TEXT
+            )
+        `);
+        console.log("Esquema 'etiquetas' atualizado.");    
+    
+        // Buscar Subpastas
         const categoriasRes = await drive.files.list({
             q: `'${DRIVE_FOLDER_ETIQUETAS}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
             fields: "files(id, name)",
@@ -26,12 +40,8 @@ export async function syncEtiquetasToDB() {
 
         const categorias = categoriasRes.data.files || [];
         
-        // PASSO 2: Limpar a Tabela Antiga
-        await run("DELETE FROM etiquetas");
-        
         let count = 0;
         
-        // PASSO 3: Processar cada subpasta/categoria
         for (const cat of categorias) {
             if (!cat.id || !cat.name) continue;
             
@@ -48,7 +58,7 @@ export async function syncEtiquetasToDB() {
                 // Monta o link do proxy de download
                 const downloadLink = `${BACKEND_URL}/api/public/download?fileId=${arquivo.id}`;
                 
-                // PASSO 4: Salvar no DB
+                // Salvar no DB
                 await run(
                     `INSERT INTO etiquetas (nome_categoria, file_id, file_name, link_download) VALUES (?, ?, ?, ?)`,
                     [cat.name, arquivo.id, arquivo.name, downloadLink]
