@@ -26,7 +26,7 @@ export const listarPromocoesPorFilial = async (req: Request, res: Response) => {
 
   try {
     // Busca todas promoções ativas
-    const sql = `SELECT * FROM promocoes WHERE ativo = 1;`;
+    const sql = `SELECT * FROM promocoes;`;
     const rows = (await query(sql)) as Promocao[];
 
     // Filtra promoções que contenham a filial
