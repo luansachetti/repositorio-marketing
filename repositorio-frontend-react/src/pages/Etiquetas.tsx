@@ -4,6 +4,7 @@ import { buscarEtiquetas } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Button from "../components/Button";
+import Footer from "../components/Footer";
 
 type Etiqueta = {
   id: number;
@@ -28,7 +29,7 @@ export default function Etiquetas() {
   useEffect(() => {
     async function carregar() {
       try {
-        
+
         const dados: EtiquetaApiResponse = await buscarEtiquetas(); 
 
         if (!dados.sucesso || !dados.etiquetas) {
@@ -100,6 +101,8 @@ export default function Etiquetas() {
           </button>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
