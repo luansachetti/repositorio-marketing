@@ -83,7 +83,7 @@ export default function Promocoes() {
           {promocoes.length === 0 ? (
             <p className="text-orange-100">Nenhuma promoção disponível.</p>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
               {promocoes.map((p) => (
                 <Button
                   key={p.id}

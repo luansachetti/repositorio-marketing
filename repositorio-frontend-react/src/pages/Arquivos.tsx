@@ -106,7 +106,7 @@ export default function Arquivos() {
           {arquivos.length === 0 ? (
             <p className="text-orange-100">Nenhum arquivo disponível.</p>
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+            <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
               {arquivos.map((a) => (
                 <div
                   key={a.nome}
