@@ -59,4 +59,4 @@ Em vez de armazenar o Base64, o sistema será refatorado para:
 
 **Em desenvolvimento por Luan S. Sachetti**
 
----
+----
