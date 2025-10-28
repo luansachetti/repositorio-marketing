@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 import { syncDriveToDB } from "./utils/syncDriveToDB.js";
 import { syncEtiquetasToDB } from "./utils/syncEtiquetasToDB.js";
 
@@ -26,6 +27,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const CLIENT_BUILD_PATH = path.join(path.resolve(), '..', 'client', 'dist');
+
+app.use(express.static(CLIENT_BUILD_PATH));
+
 // Rotas públicas
 app.use("/api/public", publicAuthRoutes);
 app.use("/api/public", publicPromocoesRoutes);
@@ -40,6 +45,11 @@ app.get("/", (req, res) => {
         mensagem: "Servidor do Repositório de Promoções e Etiquetas ativo!",
         rotas: ["/api/public/login", "/api/public/promocoes"]
     });
+});
+
+app.get('*', (req, res) => {
+    console.log(`Requisição não tratada: ${req.url}. Servindo index.html.`);
+    res.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
