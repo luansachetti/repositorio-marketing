@@ -22,11 +22,15 @@ export interface Promocao {
   ativo: number;
 }
 
-export interface Etiqueta extends Promocao {}
+export interface Etiqueta {
+  id: number;
+  nome_categoria: string;
+  file_id: string;
+  file_name: string;
+  link_download: string;
+}
 
-// -------------------
 // FUNÇÕES PÚBLICAS
-// -------------------
 
 // Login de filial/admin
 export async function loginUsuario(usuario: string, senha: string) {
@@ -46,8 +50,8 @@ export async function buscarPromocoes(filial: string) {
 }
 
 // Etiquetas da filial
-export async function buscarEtiquetas(filial: string) {
-  const res = await fetch(`${BASE_URL}/etiquetas/${filial}`);
+export async function buscarEtiquetas() {
+  const res = await fetch(`${BASE_URL}/etiquetas/`);
   return res.json();
 }
 

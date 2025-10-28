@@ -20,6 +20,7 @@ import publicAuthRoutes from "./routes/public/publicAuthRoutes.js";
 import publicPromocoesRoutes from "./routes/public/publicPromocoesRoutes.js";
 import thumbProxyController from "./controllers/public/thumbProxyController.js";
 import downloadProxyController from "./controllers/public/downloadProxyController.js"
+import etiquetasController from "./controllers/public/etiquetasController.js"
 
 const app = express();
 app.use(cors());
@@ -30,6 +31,7 @@ app.use("/api/public", publicAuthRoutes);
 app.use("/api/public", publicPromocoesRoutes);
 app.use("/api/public", thumbProxyController);
 app.use("/api/public", downloadProxyController);
+app.use("/api/public", etiquetasController);
 
 // Teste get
 app.get("/", (req, res) => {
