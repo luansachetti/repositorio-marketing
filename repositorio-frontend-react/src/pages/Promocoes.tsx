@@ -89,18 +89,22 @@ export default function Promocoes() {
                 const isDesativada = Number(p.ativo) === 0;
 
                 return (
-                  <Button
+                  <div
                     key={p.id}
-                    label={p.nome}
-                    disabled={isDesativada}
-                    onClick={() => {
-                      if (isDesativada) return;
-                      navigate("/categorias", { state: { grupo: p.grupo } })
-                    }}
                     className={isDesativada ? "pointer-events-none" : ""}
-                  />
+                  >
+                    <Button
+                      label={p.nome}
+                      disabled={isDesativada}
+                      onClick={() => {
+                        if (isDesativada) return;
+                        navigate("/categorias", { state: { grupo: p.grupo } })
+                      }}
+                      className=""
+                    />
+                  </div>
                 );
-            })}
+              })}
             </div>
           )}
 
