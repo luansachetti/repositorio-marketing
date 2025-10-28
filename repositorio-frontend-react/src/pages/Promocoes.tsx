@@ -86,20 +86,20 @@ export default function Promocoes() {
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
               {promocoes.map((p) => {
-                const isDesativada = p.ativo === 0;
+                const isDesativada = Number(p.ativo) === 0;
 
                 return (
-                <Button
-                  key={p.id}
-                  label={p.nome}
-                  disabled={isDesativada}
-                  onClick={() => {
-                    if (isDesativada) return;
-                    navigate("/categorias", { state: { grupo: p.grupo } })
-                  }}
-                  className={isDesativada ? "opacity-50 cursor-not-allowed" : ""}
-                />
-              );
+                  <Button
+                    key={p.id}
+                    label={p.nome}
+                    disabled={isDesativada}
+                    onClick={() => {
+                      if (isDesativada) return;
+                      navigate("/categorias", { state: { grupo: p.grupo } })
+                    }}
+                    className={isDesativada ? "pointer-events-none" : ""}
+                  />
+                );
             })}
             </div>
           )}
