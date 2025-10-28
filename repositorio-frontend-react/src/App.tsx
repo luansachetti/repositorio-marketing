@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Menu from "./pages/Menu";
+import Etiquetas from  "./pages/Etiquetas";
 import Promocoes from "./pages/Promocoes";
 import Categorias from "./pages/Categorias";
 import Arquivos from "./pages/Arquivos";
@@ -33,6 +34,15 @@ export default function App() {
             element={
               <RotaPrivada>
                 <Promocoes />
+              </RotaPrivada>
+            }
+          />
+
+          <Route 
+            path="/etiquetas"
+            element={
+              <RotaPrivada>
+                <Etiquetas />
               </RotaPrivada>
             }
           />

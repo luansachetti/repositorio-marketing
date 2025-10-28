@@ -19,11 +19,12 @@ export default function Menu() {
           </h1>
 
           <div className="flex flex-col gap-4">
-            <Button label="Promoções" onClick={() => navigate("/promocoes")} />
+            <Button label="Promoções" 
+              onClick={() => navigate("/promocoes")} 
+            />
             <Button
               label="Etiquetas"
               onClick={() => navigate("/etiquetas")}
-              variant="secondary"
             />
           </div>
 
