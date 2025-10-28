@@ -56,6 +56,7 @@ export async function listarArquivosDrive(folderId: string) {
                     fields: "nextPageToken, files(id, name, mimeType, webViewLink)",
                     pageSize: 1000,
                     pageToken,
+                    orderBy: 'name',
                 })
             ).data;
 
