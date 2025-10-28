@@ -1,13 +1,26 @@
 {
-    "rewrites": [
-        {
-            "source": "/api/(.*)",
-            "destination": "/api" 
-        },
-        
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "repositorio-frontend-react/package.json", 
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "repositorio-frontend-react/dist" 
+      }
+    },
+    {
+      "src": "repositorio-backend/src/server.ts", 
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/repositorio-backend/src/server.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/repositorio-frontend-react/dist/index.html"
+    }
+  ]
 }
