@@ -20,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/repositorio-frontend-react/package.json"
+      "dest": "/repositorio-frontend-react/dist"
     }
   ]
 }
