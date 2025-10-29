@@ -2,20 +2,25 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "repositorio-frontend-react/package.json", 
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": {
+        "distDir": "dist" 
+      }
+    },
+    {
+      "src": "repositorio-backend/src/server.ts", 
+      "use": "@vercel/node"
     }
   ],
   "routes": [
-    { 
-      "src": "/(.*)",
-      "dest": "/repositorio-backend/src/server.ts" 
-    },  
     {
-    "src": "/(.*)",
-    "dest": "/repositorio-frontend-react/dist/index.html",
-    "continue": true
+      "src": "/api/(.*)",
+      "dest": "/repositorio-backend/src/server.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/repositorio-frontend-react/dist/index.html"
     }
   ]
 }
