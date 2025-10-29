@@ -27,7 +27,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const CLIENT_BUILD_PATH = path.join(path.resolve(), '..', 'client', 'dist');
+const CLIENT_BUILD_PATH = path.join(path.resolve(), '..', 'repositorio-frontend-react', 'dist');
 
 app.use(express.static(CLIENT_BUILD_PATH));
 
@@ -39,17 +39,17 @@ app.use("/api/public", downloadProxyController);
 app.use("/api/public", etiquetasController);
 
 // Teste get
-app.get("/", (req, res) => {
-    res.json({
-        sucesso: true,
-        mensagem: "Servidor do Repositório de Promoções e Etiquetas ativo!",
-        rotas: ["/api/public/login", "/api/public/promocoes"]
-    });
-});
+//app.get("/", (req, res) => {
+//    res.json({
+//        sucesso: true,
+//        mensagem: "Servidor do Repositório de Promoções e Etiquetas ativo!",
+//        rotas: ["/api/public/login", "/api/public/promocoes"]
+//    });
+//});
 
 app.get('*', (req, res) => {
     console.log(`Requisição não tratada: ${req.url}. Servindo index.html.`);
-    res.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
+   res.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
