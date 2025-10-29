@@ -12,8 +12,7 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "sync": "tsx src/utils/syncDriveToDB.ts",
-    "heroku-postbuild": "echo 'Rebuild full clean'"
+    "sync": "tsx src/utils/syncDriveToDB.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.15.15",
