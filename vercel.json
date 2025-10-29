@@ -15,12 +15,12 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/api/public/(.*)",
       "dest": "/repositorio-backend/src/server.ts"
     },
     {
       "src": "/(.*)",
-      "dest": "/repositorio-frontend-react/dist/index.html"
+      "dest": "/repositorio-frontend-react/package.json"
     }
   ]
 }
