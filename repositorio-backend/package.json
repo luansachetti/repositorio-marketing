@@ -13,7 +13,7 @@
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
     "sync": "tsx src/utils/syncDriveToDB.ts",
-    "heroku-postbuild": "echo 'No postbuild step needed.'"
+    "heroku-postbuild": "echo 'Rebuild full clean'"
   },
   "dependencies": {
     "@libsql/client": "^0.15.15",
