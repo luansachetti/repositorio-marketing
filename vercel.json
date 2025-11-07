@@ -3,10 +3,7 @@
   "builds": [
     {
       "src": "repositorio-frontend-react/package.json", 
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist" 
-      }
+      "use": "@vercel/static-build"
     }
   ],
   "rewrites": [
@@ -14,12 +11,6 @@
       "source": "/api/(.*)",
       "destination": "https://managerial-toby-luansachetti-dev-7bdd9ad3.koyeb.app/api/public/$1" 
     },
-    
-    {
-      "source": "/assets/(.*)",
-      "destination": "/assets/$1" 
-    },
-    
     {
       "source": "/:path((?!api).*)", 
       "destination": "/index.html"
