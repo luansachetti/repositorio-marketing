@@ -6,7 +6,7 @@
       "destination": "https://managerial-toby-luansachetti-dev-7bdd9ad3.koyeb.app/api/public/$1" 
     },
     {
-      "source": "/:path((?!.*\\.(css|js|map|json|png|jpg|jpeg|gif|svg|ico|txt|pdf)$).*)" ,
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
