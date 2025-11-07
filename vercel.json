@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "repositorio-frontend-react/package.json", 
-      "use": "@vercel/static-build"
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist" 
+      }
     }
   ],
   "rewrites": [
