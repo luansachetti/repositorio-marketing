@@ -43,12 +43,16 @@ router.get("/download", async (req, res) => {
         fileContentResponse.data.pipe(res);
 
     } catch (error: any) {
+
         let logMessage = `Falha ao buscar arquivo ${fileId}: ${error.message}`;
         if (error.code) logMessage += ` | Code: ${error.code}`;
         if (error.status) logMessage += ` | Status: ${error.status}`;
+
         console.error(logMessage);
+
         const statusCode = error.status && error.status < 500 ? error.status : 500;
-        res.status(500).json({
+
+        res.status(statusCode).json({
             sucesso: false,
             mensagem: `Erro ao buscar arquivo. Verifique se o ID está correto e se as permissões foram concedidas. (Status do Erro: ${statusCode})`,
         });
