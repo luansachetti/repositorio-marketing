@@ -12,11 +12,11 @@
   "routes": [
     {
       "src": "/assets/(.*)",
-      "dest": "/assets/$1" 
+      "dest": "/repositorio-frontend-react/dist/assets/$1" 
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html" 
+      "dest": "/repositorio-frontend-react/dist/index.html" 
     }
   ]
 }
