@@ -1,6 +1,4 @@
-import { fileURLToPath } from "url";
-
-export const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Tipos genéricos usados em várias rotas
 export interface Usuario {
