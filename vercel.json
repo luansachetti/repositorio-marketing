@@ -9,20 +9,20 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://managerial-toby-luansachetti-dev-7bdd9ad3.koyeb.app/api/public/$1" 
+      "source": "/api/(.*)",
+      "destination": "https://managerial-toby-luansachetti-dev-7bdd9ad3.koyeb.app/api/public/$1" 
     },
     
     {
-      "src": "/assets/(.*)",
-      "dest": "repositorio-frontend-react/dist/assets/$1" 
+      "source": "/assets/(.*)",
+      "destination": "/assets/$1" 
     },
     
     {
-      "src": "/(.*)",
-      "dest": "repositorio-frontend-react/dist/index.html" 
+      "source": "/:path((?!api).*)", 
+      "destination": "/index.html"
     }
   ]
 }
