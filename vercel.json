@@ -7,17 +7,9 @@
       "config": {
         "distDir": "dist" 
       }
-    },
-    {
-      "src": "repositorio-backend/src/server.ts", 
-      "use": "@vercel/node"
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/repositorio-backend/src/server.ts"
-    },
     {
       "src": "/assets/(.*)",
       "dest": "/repositorio-frontend-react/dist/assets/$1" 
