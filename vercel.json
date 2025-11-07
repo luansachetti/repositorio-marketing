@@ -17,12 +17,12 @@
     
     {
       "src": "/assets/(.*)",
-      "dest": "/repositorio-frontend-react/dist/assets/$1" 
+      "dest": "repositorio-frontend-react/dist/assets/$1" 
     },
     
     {
       "src": "/(.*)",
-      "dest": "/repositorio-frontend-react/dist/index.html" 
+      "dest": "repositorio-frontend-react/dist/index.html" 
     }
   ]
 }
