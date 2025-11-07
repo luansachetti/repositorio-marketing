@@ -14,12 +14,6 @@
       "source": "/api/(.*)",
       "destination": "https://managerial-toby-luansachetti-dev-7bdd9ad3.koyeb.app/api/public/$1" 
     },
-    
-    {
-      "source": "/menu", 
-      "destination": "/index.html"
-    },
-    
     {
       "source": "/:path((?!api).*)", 
       "destination": "/index.html"
