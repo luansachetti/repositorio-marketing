@@ -1,9 +1,4 @@
-# ────────────────────────────────────────────────
-# 🧩 Repositório de Etiquetas e Promoções
-# Autor: Luan Sinn Sachetti
-# ────────────────────────────────────────────────
-
-# ── ⚙️ Credenciais e configs locais ─────────────
+#Credenciais e configs locais
 .env
 .env.*
 *.env.local
@@ -14,11 +9,11 @@ service-account.json
 *.pem
 *.p12
 
-# ── 🗄️ Bancos de dados locais ───────────────────
+# Bancos de dados locais
 repositorio-backend/data/*
 !repositorio-backend/data/.gitkeep
 
-# ── ⚛️ Dependências e builds ─────────────────────
+# Dependências e builds
 node_modules/
 **/node_modules/
 repositorio-backend/dist/
