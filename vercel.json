@@ -3,10 +3,10 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://managerial-toby-luansachetti-dev-7bdd9ad3.koyeb.app/api/public/$1" 
+      "destination": "managerial-toby-luansachetti-dev-7bdd9ad3.koyeb.app"
     },
     {
-      "source": "/:path((?!.*\\.(css|js|map|json|png|jpg|jpeg|gif|svg|ico|txt|pdf)$).*)" ,
+      "source": "/((?!api/|.*\\.).*)",
       "destination": "/index.html"
     }
   ]
