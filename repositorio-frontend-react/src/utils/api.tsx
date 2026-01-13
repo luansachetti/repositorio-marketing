@@ -34,7 +34,7 @@ export interface Etiqueta {
 
 // Login de filial/admin
 export async function loginUsuario(usuario: string, senha: string) {
-  const res = await fetch(`${BASE_URL}/api/login`, {
+  const res = await fetch(`${BASE_URL}/api/public/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ usuario, senha }),
@@ -45,13 +45,13 @@ export async function loginUsuario(usuario: string, senha: string) {
 
 // Promoções da filial
 export async function buscarPromocoes(filial: string) {
-  const res = await fetch(`${BASE_URL}/api/promocoes/${filial}`);
+  const res = await fetch(`${BASE_URL}/api/public/promocoes/${filial}`);
   return res.json();
 }
 
 // Etiquetas da filial
 export async function buscarEtiquetas() {
-  const res = await fetch(`${BASE_URL}/api/etiquetas/`);
+  const res = await fetch(`${BASE_URL}/api/public/etiquetas/`);
   return res.json();
 }
 
