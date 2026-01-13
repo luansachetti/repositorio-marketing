@@ -42,7 +42,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white p-6">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg shadow-orange-900/30 p-8 w-full max-w-sm text-center">
-        {/* 🔹 Logo */}
+        {/* Logo */}
         
         <img
           src={`${base}img/logo.svg`}

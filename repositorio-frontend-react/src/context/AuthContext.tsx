@@ -43,7 +43,7 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth deve ser usado dentro de AuthProvider");
 
-  // 💡 Retorna um objeto com "usuario!" (garantido)
+  // Retorna um objeto com "usuario!" (garantido)
   return {
     ...context,
     usuario: context.usuario!, // o ponto de exclamação diz ao TS que não é null

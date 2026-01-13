@@ -1,4 +1,4 @@
-#Credenciais e configs locais
+# Credenciais e configs locais
 .env
 .env.*
 *.env.local
@@ -23,7 +23,7 @@ repositorio-frontend-react/node_modules/
 build/
 .out/
 
-# ── 🧪 Logs / caches / reports ───────────────────
+# Logs / caches / reports 
 logs/
 *.log
 npm-debug.log*
@@ -34,7 +34,7 @@ pnpm-debug.log*
 .cache-loader/
 coverage/
 
-# ── 🖥️ Arquivos de SO e IDE ─────────────────────
+# Arquivos de SO e IDE 
 .DS_Store
 Thumbs.db
 .vscode/
@@ -42,7 +42,7 @@ Thumbs.db
 *.swp
 *.swo
 
-# ── 🧱 Backups / testes / temporários ───────────
+# Backups / testes / temporários 
 *.bak
 *.old
 *.tmp

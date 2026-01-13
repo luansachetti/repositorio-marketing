@@ -7,7 +7,7 @@ export default function Footer() {
         sm:text-xs sm:py-3
       "
     >
-      © {ano} Repositório de Etiquetas e Promoções • Desenvolvido por{" "}
+      © {ano} Repositório de Marketing • Desenvolvido por{" "}
       <span className="font-semibold text-white">Luan S. Sachetti</span>
     </footer>
   );

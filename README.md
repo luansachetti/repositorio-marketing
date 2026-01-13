@@ -1,4 +1,4 @@
-# Gestão de Conteúdo e Promoções (Rede de Farmácias Mariano)
+# Gestão de Marketing (Rede de Farmácias Mariano)
 
 ## Visão Geral do Projeto
 
