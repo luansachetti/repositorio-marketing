@@ -1,3 +1,5 @@
+// src/utils/seedFiliais.ts
+
 import { query, run } from "./query.js";
 
 console.log("Sincronizando usuários com base nas promoções...");

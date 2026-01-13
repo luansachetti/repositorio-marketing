@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import { syncDriveToDB } from "./utils/syncDriveToDB.js";
 import { syncEtiquetasToDB } from "./utils/syncEtiquetasToDB.js";
+import { readMarketingDrive } from "./utils/readMarketingDrive.js";
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ import publicPromocoesRoutes from "./routes/public/publicPromocoesRoutes.js";
 import thumbProxyController from "./controllers/public/thumbProxyController.js";
 import downloadProxyController from "./controllers/public/downloadProxyController.js"
 import etiquetasController from "./controllers/public/etiquetasController.js"
+import publicMarketingRoutes from "./controllers/public/publicMarketingRoutes.js";
+
 
 const app = express();
 app.use(cors());
@@ -37,6 +40,7 @@ app.use("/api/public", publicPromocoesRoutes);
 app.use("/api/public", thumbProxyController);
 app.use("/api/public", downloadProxyController);
 app.use("/api/public", etiquetasController);
+app.use("/api/public", publicMarketingRoutes);
 
 // Teste get
 app.get("/", (req, res) => {
@@ -50,6 +54,15 @@ app.get("/", (req, res) => {
 app.get('*', (req, res) => {
     console.log(`Requisição não tratada: ${req.url}. Servindo index.html.`);
     res.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
+});
+
+app.get("/api/test/marketing", async (req, res) => {
+  try {
+    const tree = await readMarketingDrive();
+    res.json(tree);
+  } catch (e: any) {
+    res.status(500).json({ erro: e.message });
+  }
 });
 
 const PORT = process.env.PORT || 3000;

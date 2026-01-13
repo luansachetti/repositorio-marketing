@@ -9,3 +9,7 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/api/public/promocoes/apiuna01
 Accept: application/json
+
+### Testar Marketing (LOCAL)
+GET http://localhost:3000/api/public/marketing
+Accept: application/json

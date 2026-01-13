@@ -1,4 +1,4 @@
-// syncEtiquetasToDB.ts
+// src/utils/syncEtiquetasToDB.ts
 
 import { run } from "./query.js";
 import { getDriveClient } from "./driveUtils.js";

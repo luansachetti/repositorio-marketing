@@ -1,3 +1,5 @@
+// src/utils/query.ts
+
 import db, { isRemote } from "./db.js";
 
 export async function query(sql: string, params: any[] = []): Promise<any[]> {
