@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { buscarCategoria, MarketingNode } from "../utils/api";
+import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 
 export default function CategoriaDetalhe() {
   const { slug } = useParams<{ slug: string }>();
+  const { usuario } = useAuth();
   const navigate = useNavigate();
   const [categoria, setCategoria] = useState<MarketingNode | null>(null);
   const [carregando, setCarregando] = useState(true);
@@ -44,55 +46,60 @@ export default function CategoriaDetalhe() {
       return (
         <div
           key={node.id}
-          className="bg-white rounded-xl shadow-md overflow-hidden mb-4"
+          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4 hover:bg-white/15 transition-all duration-200"
         >
-          <div className="p-4 flex items-center gap-4">
-            {/* Thumbnail */}
-            {node.thumbUrl && (
-              <img
-                src={node.thumbUrl}
-                alt={node.name}
-                className="w-20 h-20 object-cover rounded-lg border border-gray-200"
-                onError={(e) => {
-                  e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23e5e7eb' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='12'%3EImagem%3C/text%3E%3C/svg%3E";
-                }}
-              />
-            )}
-
-            {/* Info do arquivo */}
-            <div className="flex-1">
-              <h4 className="font-semibold text-gray-800">{node.name}</h4>
-              {node.mimeType && (
-                <p className="text-xs text-gray-500 mt-1">
-                  {node.mimeType.split("/")[1]?.toUpperCase() || "Arquivo"}
-                </p>
-              )}
+          {/* Thumbnail */}
+          {node.thumbUrl ? (
+            <img
+              src={node.thumbUrl}
+              alt={node.name}
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg border border-white/20 flex-shrink-0"
+              onError={(e) => {
+                const img = e.currentTarget;
+                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect fill='%23ffffff' fill-opacity='0.2' width='96' height='96'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23ffffff' font-size='40'%3E📄%3C/text%3E%3C/svg%3E";
+              }}
+            />
+          ) : (
+            <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center bg-white/10 rounded-lg border border-white/20 text-4xl flex-shrink-0">
+              📄
             </div>
+          )}
 
-            {/* Botão de download */}
-            {node.downloadUrl && (
-              <a
-                href={node.downloadUrl}
-                download
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </svg>
-                Baixar
-              </a>
+          {/* Info do arquivo */}
+          <div className="flex-1 text-center sm:text-left">
+            <h4 className="font-semibold text-white text-sm sm:text-base">
+              {node.name}
+            </h4>
+            {node.mimeType && (
+              <p className="text-xs text-orange-100 mt-1">
+                {node.mimeType.split("/")[1]?.toUpperCase() || "Arquivo"}
+              </p>
             )}
           </div>
+
+          {/* Botão de download */}
+          {node.downloadUrl && (
+            <a
+              href={node.downloadUrl}
+              download
+              className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-4 py-2 rounded-lg transition-all duration-200 active:scale-95 font-semibold text-sm shadow-md flex items-center gap-2 w-full sm:w-auto justify-center"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
+              Baixar
+            </a>
+          )}
         </div>
       );
     }
@@ -100,11 +107,11 @@ export default function CategoriaDetalhe() {
     // Se for pasta, renderiza os filhos
     if (node.type === "folder" && node.children && node.children.length > 0) {
       return (
-        <div key={node.id} className={nivel > 0 ? "ml-6 mt-4" : ""}>
+        <div key={node.id} className={nivel > 0 ? "ml-4 mt-4" : ""}>
           {nivel > 0 && (
-            <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
               <svg
-                className="w-5 h-5 text-gray-500"
+                className="w-5 h-5 text-orange-200"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -119,7 +126,7 @@ export default function CategoriaDetalhe() {
               {node.name}
             </h3>
           )}
-          <div className="space-y-2">
+          <div className="space-y-3">
             {node.children.map((child) => renderizarNode(child, nivel + 1))}
           </div>
         </div>
@@ -129,47 +136,47 @@ export default function CategoriaDetalhe() {
     return null;
   }
 
+  if (carregando) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white">
+        <p className="text-lg font-medium">Carregando arquivos...</p>
+      </div>
+    );
+  }
+
+  if (erro) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white text-center p-6">
+        <p className="text-lg font-medium mb-4">{erro}</p>
+        <Button label="Voltar" onClick={() => navigate("/marketing")} />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-orange-500 via-red-500 to-orange-700 text-white">
       <Header />
 
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Botão voltar */}
-          <Button
+      <main className="flex flex-col justify-center items-center flex-1 p-6 text-center">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg shadow-orange-900/20 p-6 w-full max-w-5xl">
+          <h1 className="text-xl font-semibold mb-6">
+            {categoria?.name} — {usuario?.nome_exibicao}
+          </h1>
+
+          {categoria && categoria.children && categoria.children.length > 0 ? (
+            <div className="space-y-3 text-left">
+              {renderizarNode(categoria)}
+            </div>
+          ) : (
+            <p className="text-orange-100">Nenhum arquivo disponível nesta categoria.</p>
+          )}
+
+          <button
             onClick={() => navigate("/marketing")}
-            className="mb-6 bg-gray-600 hover:bg-gray-700" label={""}          >
-            ← Voltar para Categorias
-          </Button>
-
-          {carregando && (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-              <p className="mt-4 text-gray-600">Carregando arquivos...</p>
-            </div>
-          )}
-
-          {erro && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-              {erro}
-            </div>
-          )}
-
-          {!carregando && !erro && categoria && (
-            <>
-              <h1 className="text-3xl font-bold text-gray-800 mb-6">
-                {categoria.name}
-              </h1>
-
-              {categoria.children && categoria.children.length > 0 ? (
-                renderizarNode(categoria)
-              ) : (
-                <div className="text-center py-12 bg-white rounded-lg shadow">
-                  <p className="text-gray-600">Nenhum arquivo disponível nesta categoria.</p>
-                </div>
-              )}
-            </>
-          )}
+            className="mt-6 text-sm text-orange-100 underline hover:text-white transition"
+          >
+            ← Voltar para categorias
+          </button>
         </div>
       </main>
 
