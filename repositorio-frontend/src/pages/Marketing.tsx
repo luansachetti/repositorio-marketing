@@ -78,7 +78,7 @@ export default function Marketing() {
           {categorias.length === 0 ? (
             <p className="text-orange-100">Nenhuma categoria disponível.</p>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
               {categorias.map((categoria) => {
                 const totalArquivos = contarArquivos(categoria);
                 
