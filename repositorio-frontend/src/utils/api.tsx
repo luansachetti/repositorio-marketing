@@ -1,6 +1,9 @@
+// src/utils/api.tsx
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-// Tipos genéricos usados em várias rotas
+// ========== TIPOS ==========
+
 export interface Usuario {
   id: number;
   usuario: string;
@@ -10,27 +13,31 @@ export interface Usuario {
   ativo: number;
 }
 
-export interface Promocao {
-  id: number;
-  tipo: string;
-  nome: string;
-  grupo: string;
-  categoria: string;
-  id_pasta: string;
-  usuarios_vinculados: string[];
-  arquivos: { nome: string; link: string; thumb?: string }[];
-  ativo: number;
+// Tipo para a estrutura recursiva do Marketing
+export interface MarketingNode {
+  id: string;
+  name: string;
+  slug: string;
+  type: "folder" | "file";
+  mimeType?: string | null;
+  downloadUrl?: string;
+  thumbUrl?: string;
+  children?: MarketingNode[];
 }
 
-export interface Etiqueta {
-  id: number;
-  nome_categoria: string;
-  file_id: string;
-  file_name: string;
-  link_download: string;
+export interface RespostaMarketing {
+  sucesso: boolean;
+  ultima_sincronizacao: string;
+  categorias: MarketingNode[];
+  total_categorias: number;
 }
 
-// FUNÇÕES PÚBLICAS
+export interface RespostaCategoriaUnica {
+  sucesso: boolean;
+  categoria: MarketingNode;
+}
+
+// ========== FUNÇÕES DE API ==========
 
 // Login de filial/admin
 export async function loginUsuario(usuario: string, senha: string) {
@@ -43,19 +50,21 @@ export async function loginUsuario(usuario: string, senha: string) {
   return res.json();
 }
 
-// Promoções da filial
-export async function buscarPromocoes(filial: string) {
-  const res = await fetch(`${BASE_URL}/api/public/promocoes/${filial}`);
+// Buscar todas as categorias de Marketing
+export async function buscarMarketing(): Promise<RespostaMarketing> {
+  const res = await fetch(`${BASE_URL}/api/public/marketing`);
+  if (!res.ok) throw new Error("Erro ao buscar materiais de Marketing");
   return res.json();
 }
 
-// Etiquetas da filial
-export async function buscarEtiquetas() {
-  const res = await fetch(`${BASE_URL}/api/public/etiquetas/`);
+// Buscar categoria específica por slug
+export async function buscarCategoria(slug: string): Promise<RespostaCategoriaUnica> {
+  const res = await fetch(`${BASE_URL}/api/public/marketing/${slug}`);
+  if (!res.ok) throw new Error(`Erro ao buscar categoria: ${slug}`);
   return res.json();
 }
 
-// Função genérica de GET (pode usar para admin futuramente)
+// Função genérica de GET
 export async function get<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${BASE_URL}${endpoint}`);
   if (!res.ok) throw new Error("Erro ao acessar API");
