@@ -32,7 +32,7 @@ if (isRemote) {
   // Criação das tabelas apenas no ambiente local
   (db as sqlite3.Database).serialize(() => {
 
-    // Usuários
+    // Usuários (mantido para autenticação)
     (db as sqlite3.Database).run(`
       CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,31 +44,16 @@ if (isRemote) {
       )
     `);
 
-    // Promoções
+    // Nova tabela unificada de Marketing (substitui promocoes e etiquetas)
     (db as sqlite3.Database).run(`
-      CREATE TABLE IF NOT EXISTS promocoes (
+      CREATE TABLE IF NOT EXISTS materiais_marketing (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        tipo TEXT,
-        nome TEXT,
-        grupo TEXT,
-        categoria TEXT,
-        id_pasta TEXT,
-        usuarios_vinculados TEXT,
-        arquivos TEXT,
-        ativo INTEGER DEFAULT 1
+        tree_json TEXT NOT NULL,
+        data_sync DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
-    // Etiquetas
-    (db as sqlite3.Database).run(`
-      CREATE TABLE IF NOT EXISTS etiquetas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome_categoria TEXT NOT NULL,
-        file_id TEXT NOT NULL,
-        file_name TEXT,
-        link_download TEXT
-      )
-    `);
+    console.log("✅ Tabelas criadas/verificadas com sucesso!");
   });
 }
 
