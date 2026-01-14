@@ -4,10 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Menu from "./pages/Menu";
-import Etiquetas from  "./pages/Etiquetas";
-import Promocoes from "./pages/Promocoes";
-import Categorias from "./pages/Categorias";
-import Arquivos from "./pages/Arquivos";
+import Marketing from "./pages/Marketing";
+import CategoriaDetalhe from "./pages/CategoriaDetalhe";
 import { JSX } from "react";
 
 function RotaPrivada({ children }: { children: JSX.Element }) {
@@ -20,8 +18,10 @@ export default function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          {/* Rota pública */}
           <Route path="/" element={<Login />} />
 
+          {/* Rotas privadas */}
           <Route
             path="/menu"
             element={
@@ -31,42 +31,27 @@ export default function App() {
             }
           />
 
+          {/* Nova rota de Marketing - Lista de categorias */}
           <Route
-            path="/promocoes"
+            path="/marketing"
             element={
               <RotaPrivada>
-                <Promocoes />
+                <Marketing />
               </RotaPrivada>
             }
           />
 
-          <Route 
-            path="/etiquetas"
-            element={
-              <RotaPrivada>
-                <Etiquetas />
-              </RotaPrivada>
-            }
-          />
-
+          {/* Rota dinâmica - Detalhes de uma categoria específica */}
           <Route
-            path="/categorias"
+            path="/marketing/:slug"
             element={
               <RotaPrivada>
-                <Categorias />
+                <CategoriaDetalhe />
               </RotaPrivada>
             }
           />
 
-          <Route
-            path="/arquivos"
-            element={
-              <RotaPrivada>
-                <Arquivos />
-              </RotaPrivada>
-            }
-          />
-
+          {/* Fallback - Redireciona qualquer rota não encontrada para login */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
