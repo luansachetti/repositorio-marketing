@@ -37,6 +37,13 @@ export interface RespostaCategoriaUnica {
   categoria: MarketingNode;
 }
 
+export interface RespostaSync {
+  sucesso: boolean;
+  mensagem: string;
+  timestamp?: string;
+  erro?: string;
+}
+
 // ========== FUNÇÕES DE API ==========
 
 // Login de filial/admin
@@ -61,6 +68,17 @@ export async function buscarMarketing(): Promise<RespostaMarketing> {
 export async function buscarCategoria(slug: string): Promise<RespostaCategoriaUnica> {
   const res = await fetch(`${BASE_URL}/api/public/marketing/${slug}`);
   if (!res.ok) throw new Error(`Erro ao buscar categoria: ${slug}`);
+  return res.json();
+}
+
+// Forçar sincronização manual (Admin only)
+export async function sincronizarDrive(): Promise<RespostaSync> {
+  const res = await fetch(`${BASE_URL}/api/admin/sync`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!res.ok) throw new Error("Erro ao sincronizar com o Drive");
   return res.json();
 }
 
