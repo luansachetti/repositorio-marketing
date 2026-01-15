@@ -68,7 +68,6 @@ router.get("/thumb", async (req, res) => {
         thumbnailStream.pipe(res);
 
     } catch (error: any) {
-        // ... (resto da lógica de erro)
         console.error("Erro ao obter miniatura via Proxy:", error.message);
         const statusCode = error.response?.status || 500;
         
