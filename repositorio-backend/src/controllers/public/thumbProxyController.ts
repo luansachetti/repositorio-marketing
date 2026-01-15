@@ -1,4 +1,4 @@
-// thumbProxyController.ts
+// src/controllers/public/thumbProxyController.ts
 
 import express from "express";
 import axios from "axios";

@@ -1,4 +1,4 @@
-// publicAuthController.ts
+// src/controllers/public/publicAuthController.ts
 
 import { Request, Response } from "express";
 import { query } from "../../utils/query.js";

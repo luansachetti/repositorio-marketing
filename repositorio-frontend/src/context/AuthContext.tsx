@@ -1,10 +1,12 @@
+// src/context/AuthContext.tsx
+
 import { createContext, useContext, useState, ReactNode } from "react";
 
 type Usuario = {
   id: number;
   usuario: string;
   nome_exibicao: string;
-  tipo: string;
+  tipo: "admin" | "filial"; // Tipagem forte
   ativo: number;
 };
 
@@ -41,11 +43,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth deve ser usado dentro de AuthProvider");
-
-  // Retorna um objeto com "usuario!" (garantido)
-  return {
-    ...context,
-    usuario: context.usuario!, // o ponto de exclamação diz ao TS que não é null
-  };
+  if (!context) {
+    throw new Error("useAuth deve ser usado dentro de AuthProvider");
+  }
+  return context;
 };
