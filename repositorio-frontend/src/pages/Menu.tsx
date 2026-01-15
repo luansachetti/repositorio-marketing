@@ -13,26 +13,40 @@ export default function Menu() {
   const { usuario } = useAuth();
   const [sincronizando, setSincronizando] = useState(false);
   const [mensagemSync, setMensagemSync] = useState("");
+  const [logs, setLogs] = useState<string[]>([]);
 
   // Verifica se o usuário é admin
   const isAdmin = usuario?.tipo === "admin";
+
+  function adicionarLog(mensagem: string) {
+    const timestamp = new Date().toLocaleTimeString("pt-BR");
+    setLogs(prev => [...prev, `[${timestamp}] ${mensagem}`]);
+  }
 
   async function handleSync() {
     try {
       setSincronizando(true);
       setMensagemSync("");
+      setLogs([]); // Limpa logs anteriores
+
+      adicionarLog("🔄 Iniciando sincronização com Google Drive...");
+      adicionarLog("📡 Conectando ao servidor...");
 
       const resposta = await sincronizarDrive();
 
       if (resposta.sucesso) {
+        adicionarLog("✅ Sincronização concluída com sucesso!");
+        adicionarLog(`📊 Dados atualizados às ${resposta.timestamp ? new Date(resposta.timestamp).toLocaleTimeString("pt-BR") : "agora"}`);
         setMensagemSync("✅ Sincronização concluída com sucesso!");
         
         // Limpar mensagem após 5 segundos
         setTimeout(() => setMensagemSync(""), 5000);
       } else {
+        adicionarLog("❌ Erro: " + resposta.mensagem);
         setMensagemSync("❌ Erro ao sincronizar: " + resposta.mensagem);
       }
     } catch (e: any) {
+      adicionarLog("❌ Falha na comunicação com o servidor");
       setMensagemSync("❌ Erro ao sincronizar com o servidor.");
       console.error(e);
     } finally {
@@ -79,6 +93,22 @@ export default function Menu() {
                 : "bg-red-500/20 border border-red-400/30 text-red-100"
             }`}>
               {mensagemSync}
+            </div>
+          )}
+
+          {/* Área de Logs - Apenas para Admin */}
+          {isAdmin && logs.length > 0 && (
+            <div className="mt-4 bg-black/30 backdrop-blur-sm border border-white/10 rounded-lg p-4 text-left">
+              <div className="flex items-center gap-2 mb-2 pb-2 border-b border-white/10">
+                <span className="text-xs font-mono text-orange-200">📋 Logs de Sincronização</span>
+              </div>
+              <div className="space-y-1 max-h-32 overflow-y-auto font-mono text-xs text-orange-100">
+                {logs.map((log, index) => (
+                  <div key={index} className="text-left opacity-90 hover:opacity-100 transition-opacity">
+                    {log}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
