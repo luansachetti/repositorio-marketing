@@ -2,61 +2,213 @@
 
 ## Visão Geral do Projeto
 
-Solução Full-Stack para centralizar e automatizar a distribuição de materiais de marketing (promoções e etiquetas) para toda a rede de filiais, eliminando a dependência de métodos de comunicação caóticos e inseguros (como grupos de WhatsApp).
+Solução Full-Stack para centralizar e automatizar a distribuição de materiais de marketing para toda a rede de filiais, eliminando a dependência de métodos de comunicação caóticos e inseguros (como grupos de WhatsApp).
 
-Este sistema garante que cada filial acesse **apenas o conteúdo promocional relevante** para sua respectiva área de marketing e concorrência.
+O sistema se adapta **automaticamente** à estrutura de pastas do Google Drive, permitindo que o departamento de Marketing organize os materiais livremente sem necessidade de alterações no código.
 
 ---
 
-## Stack Tecnológico Atual
+## Stack Tecnológico
 
 | Categoria | Tecnologia | Por que foi escolhida |
 | :--- | :--- | :--- |
 | **Frontend** | TypeScript, React, Tailwind CSS | Garante **escalabilidade**, tipagem forte e um layout moderno e responsivo. |
 | **Backend** | TypeScript, Node.js (Express) | Potência e velocidade na manipulação de APIs e uso de *streams* de dados. |
-| **Banco de Dados** | Turso (SQLite Edge) | Alta performance e baixa latência para consultas rápidas do catálogo de promoções. |
-| **Infraestrutura** | Koyeb (Serverless) | Deploy gratuito e gerenciável, garantindo a disponibilidade 24/7. |
+| **Banco de Dados** | Turso (SQLite Edge) | Alta performance e baixa latência. Armazena snapshots da estrutura do Drive. |
+| **Storage** | Google Drive API | Repositório central dos materiais. Service Account para autenticação. |
+| **Infraestrutura** | Koyeb (Backend) + Vercel (Frontend) | Deploy automático via GitHub, garantindo disponibilidade 24/7. |
 
 ---
 
-## O Desafio de Negócio (A Dor do WhatsApp)
+## O Problema de Negócio
 
-Anteriormente, todo o material de marketing (promoções, etiquetas, arquivos para telões) era enviado através de **grupos de WhatsApp**, resultando em:
+Anteriormente, todo o material de marketing era distribuído através de **grupos de WhatsApp**, resultando em:
 
-* **Desorganização:** Dificuldade de encontrar arquivos antigos e recentes no meio de outras mensagens.
-* **Acesso Incorreto:** Filiais acessando conteúdo de promoções erradas ou que não se aplicavam à sua região.
-* **Ineficiência:** Tempo desperdiçado para o marketing na distribuição e para as filiais na busca/download.
+* **Desorganização:** Dificuldade de encontrar arquivos no meio de mensagens.
+* **Acesso Incorreto:** Filiais baixando materiais que não se aplicavam à sua região.
+* **Ineficiência:** Tempo desperdiçado na busca e distribuição manual.
 
 ---
 
-## Evolução da Arquitetura (Jornada de 5 Refatorações)
+## Funcionalidades Atuais
 
-Este repositório representa a **quinta iteração de uma solução full-stack**, que priorizou a robustez em detrimento da velocidade de entrega. As refatorações foram motivadas pela busca de **qualidade e performance em ambiente de produção**.
+### Sistema de Autenticação
+- Login diferenciado para **Admin** e **Filiais**
+- Controle de acesso baseado em tipo de usuário
 
-| Etapa | O Desafio Técnico Encontrado | A Solução Implementada |
+### Gestão Dinâmica de Categorias
+- Sistema lê automaticamente a estrutura de pastas do Google Drive
+- Marketing pode criar/remover categorias sem alterar código
+- Suporte a **subpastas recursivas** (pastas dentro de pastas)
+
+### Sincronização Inteligente
+- **Automática:** A cada 10 minutos e ao iniciar o servidor
+- **Manual:** Botão exclusivo para administradores com logs em tempo real
+- Armazena snapshot completo no Turso para performance
+
+### Proxy de Imagens e Downloads
+- Thumbnails otimizadas via proxy do backend
+- Downloads diretos através de stream (sem armazenar no servidor)
+- Autenticação transparente com Google Drive Service Account
+
+### Interface Responsiva
+- Design mobile-first
+- Layout adaptativo (2 colunas mobile, 3 no desktop)
+- Feedback visual em todas as ações
+
+---
+
+## Arquitetura do Sistema
+
+### Fluxo de Dados
+
+```
+Google Drive (Source of Truth)
+        ↓
+   [Sincronização]
+        ↓
+  Turso DB (Cache)
+        ↓
+   Backend API
+        ↓
+  Frontend (React)
+```
+
+### Como Funciona
+
+1. **Marketing organiza materiais** no Google Drive dentro da pasta raiz "Marketing"
+2. **Backend sincroniza** automaticamente (ou via botão admin)
+3. **Estrutura completa** é salva no Turso como JSON
+4. **Frontend consome** dados do banco (não do Drive diretamente)
+5. **Thumbnails e downloads** passam pelo proxy do backend
+
+---
+
+## Estrutura do Projeto
+
+```
+repositorio-marketing/
+├── repositorio-backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── admin/
+│   │   │   │   └── syncController.ts       # Sincronização manual
+│   │   │   └── public/
+│   │   │       ├── marketingController.ts  # API de categorias
+│   │   │       ├── thumbProxyController.ts # Proxy de thumbnails
+│   │   │       └── downloadProxyController.ts
+│   │   ├── routes/
+│   │   │   └── public/
+│   │   │       └── publicAuthRoutes.ts
+│   │   ├── utils/
+│   │   │   ├── db.ts                       # Conexão Turso/SQLite
+│   │   │   ├── driveUtils.ts               # Autenticação Google
+│   │   │   ├── readMarketingDrive.ts       # Leitura recursiva
+│   │   │   ├── syncMarketingToDB.ts        # Sincronização
+│   │   │   └── query.ts                    # Helpers de query
+│   │   └── server.ts
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── repositorio-frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Header.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   └── Button.tsx
+│   │   ├── context/
+│   │   │   └── AuthContext.tsx
+│   │   ├── pages/
+│   │   │   ├── Login.tsx
+│   │   │   ├── Menu.tsx
+│   │   │   ├── Marketing.tsx               # Lista de categorias
+│   │   │   └── CategoriaDetalhe.tsx        # Arquivos da categoria
+│   │   ├── utils/
+│   │   │   └── api.tsx
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── package.json
+│   └── tailwind.config.js
+│
+└── README.md
+```
+
+---
+
+## Como Executar
+
+### Pré-requisitos
+- Node.js 18+
+- Conta Google Cloud com Service Account configurada
+- Conta Turso (ou SQLite local para dev)
+
+### Backend
+
+```bash
+cd repositorio-backend
+npm install
+npm run dev  # Desenvolvimento
+npm run build && npm start  # Produção
+```
+
+### Frontend
+
+```bash
+cd repositorio-frontend
+npm install
+npm run dev  # Desenvolvimento
+npm run build  # Produção
+```
+
+### Sincronização Manual
+
+```bash
+cd repositorio-backend
+npm run sync:marketing
+```
+
+---
+
+## Schema do Banco de Dados
+
+### Tabela: `usuarios`
+```sql
+CREATE TABLE usuarios (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  usuario TEXT UNIQUE NOT NULL,
+  nome_exibicao TEXT NOT NULL,
+  senha TEXT NOT NULL,
+  tipo TEXT CHECK(tipo IN ('admin','filial')) NOT NULL,
+  ativo INTEGER DEFAULT 1
+);
+```
+
+### Tabela: `materiais_marketing`
+```sql
+CREATE TABLE materiais_marketing (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tree_json TEXT NOT NULL,  -- Estrutura completa em JSON
+  data_sync DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+## 🔄 Evolução da Arquitetura
+
+| Versão | Desafio | Solução |
 | :--- | :--- | :--- |
-| **1-3 (Iniciais)** | Autenticação no Google Drive API, lógica de regras de acesso complexas (Feed, Stories, Impressão, Telões). | Uso de **Conta de Serviço Google** para acessar o repositório organizado do Drive e lógica de permissão de pastas no Backend. |
-| **4 (Performance)** | Lentidão extrema: O Backend percorria **todas as pastas e arquivos** a cada requisição do Frontend, sobrecarregando o sistema. | Implementação de um **banco de dados SQLite** local para cachear metadados, reduzindo a latência e a carga na API do Google. |
-| **5 (Performance e UI/UX)** | Código desorganizado (`10 arquivos CSS`) e falta de tipagem segura. | **Refatoração completa** do *stack* para **TypeScript, React, e Tailwind CSS**, garantindo manutenibilidade e UI/UX responsivo. |
+| **v1-v3** | Autenticação e regras de acesso complexas | Service Account do Google + lógica de permissões |
+| **v4** | Performance ruim (varredura completa a cada request) | Cache em SQLite local |
+| **v5** | Código desorganizado, falta de tipagem | Refatoração completa para TypeScript + React + Tailwind |
+| **v6 (Atual)** | Sistema rígido, dependente de categorias fixas | Sistema dinâmico que lê estrutura do Drive automaticamente |
 
 ---
 
-## Otimização Crítica (Próximo Passo)
+## Licença
 
-A versão funcional anterior encontrou um **débito técnico crítico** ao tentar exibir miniaturas (`thumbs`):
-
-* **Problema:** O link direto do Google Drive para as miniaturas era bloqueado por falta de autenticação no lado do cliente (navegador), forçando o uso de **Base64** para exibir a imagem.
-* **Gargalo:** O armazenamento de **`thumb_base64`** no banco de dados (Turso) estava inchando o DB e prejudicando a performance na nuvem.
-
-### A Solução de Engenharia (Em Implementação)
-
-Em vez de armazenar o Base64, o sistema será refatorado para:
-
-1.  **DB Leve:** O Turso armazenará apenas o **`fileId`** do Google Drive.
-2.  **Proxy de Imagens:** O Backend (Node.js) atuará como um **Proxy de *Stream***: ele usará o Token de Serviço para buscar a miniatura otimizada (`s150`) no Google e transmitirá o *stream* diretamente para o navegador, resolvendo a autenticação e mantendo o frontend rápido.
+Este projeto é de uso interno da Rede de Farmácias Mariano.
 
 ---
 
-**Em desenvolvimento por Luan S. Sachetti**
-
-----
+**Desenvolvido por Luan S. Sachetti** 
