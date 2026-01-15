@@ -121,7 +121,6 @@ export default function Marketing() {
               })}
             </div>
           )}
-
           <button
             onClick={() => navigate("/menu")}
             className="mt-6 text-sm text-orange-100 underline hover:text-white transition"
