@@ -92,23 +92,32 @@ repositorio-marketing/
 │   ├── src/
 │   │   ├── controllers/
 │   │   │   ├── admin/
-│   │   │   │   └── syncController.ts       # Sincronização manual
+│   │   │   │   └── syncController.ts          # Sincronização manual
 │   │   │   └── public/
-│   │   │       ├── marketingController.ts  # API de categorias
-│   │   │       ├── thumbProxyController.ts # Proxy de thumbnails
-│   │   │       └── downloadProxyController.ts
+│   │   │       ├── marketingController.ts     # API de categorias
+│   │   │       ├── publicAuthController.ts    # Autenticação
+│   │   │       ├── thumbProxyController.ts    # Proxy de thumbnails
+│   │   │       └── downloadProxyController.ts # Proxy de downloads
 │   │   ├── routes/
+│   │   │   ├── admin/
+│   │   │   │   └── adminUserRoutes.ts
 │   │   │   └── public/
 │   │   │       └── publicAuthRoutes.ts
 │   │   ├── utils/
-│   │   │   ├── db.ts                       # Conexão Turso/SQLite
-│   │   │   ├── driveUtils.ts               # Autenticação Google
-│   │   │   ├── readMarketingDrive.ts       # Leitura recursiva
-│   │   │   ├── syncMarketingToDB.ts        # Sincronização
-│   │   │   └── query.ts                    # Helpers de query
-│   │   └── server.ts
+│   │   │   ├── db.ts                          # Conexão Turso/SQLite
+│   │   │   ├── driveUtils.ts                  # Autenticação Google Drive
+│   │   │   ├── readMarketingDrive.ts          # Leitura recursiva do Drive
+│   │   │   ├── syncMarketingToDB.ts           # Sincronização Drive → DB
+│   │   │   └── query.ts                       # Helpers de query
+│   │   └── server.ts                          # Servidor principal
+│   ├── config/
+│   │   └── service-account.json               # Credenciais Google (gitignored)
+│   ├── data/
+│   │   └── repo.db                            # SQLite local (dev)
 │   ├── package.json
-│   └── tsconfig.json
+│   ├── tsconfig.json
+│   ├── tsconfig.build.json
+│   └── .env.example                           # Template de variáveis
 │
 ├── repositorio-frontend/
 │   ├── src/
@@ -117,19 +126,30 @@ repositorio-marketing/
 │   │   │   ├── Footer.tsx
 │   │   │   └── Button.tsx
 │   │   ├── context/
-│   │   │   └── AuthContext.tsx
+│   │   │   └── AuthContext.tsx                # Gerenciamento de auth
 │   │   ├── pages/
 │   │   │   ├── Login.tsx
-│   │   │   ├── Menu.tsx
-│   │   │   ├── Marketing.tsx               # Lista de categorias
-│   │   │   └── CategoriaDetalhe.tsx        # Arquivos da categoria
+│   │   │   ├── Menu.tsx                       # Menu principal
+│   │   │   ├── Marketing.tsx                  # Lista de categorias
+│   │   │   └── CategoriaDetalhe.tsx           # Arquivos da categoria
 │   │   ├── utils/
-│   │   │   └── api.tsx
-│   │   ├── App.tsx
-│   │   └── main.tsx
+│   │   │   └── api.tsx                        # Funções de API
+│   │   ├── App.tsx                            # Componente raiz
+│   │   ├── main.tsx                           # Entry point
+│   │   └── index.css                          # Estilos globais
+│   ├── public/
+│   │   └── img/
+│   │       ├── logo.svg
+│   │       └── logo.png
 │   ├── package.json
-│   └── tailwind.config.js
+│   ├── tailwind.config.js
+│   ├── vite.config.js
+│   └── index.html
 │
+├── .gitignore
+├── .gitattributes
+├── vercel.json                                # Config do Vercel
+├── package.json                               # Scripts do monorepo
 └── README.md
 ```
 
@@ -194,7 +214,7 @@ CREATE TABLE materiais_marketing (
 
 ---
 
-## 🔄 Evolução da Arquitetura
+## Evolução da Arquitetura
 
 | Versão | Desafio | Solução |
 | :--- | :--- | :--- |
@@ -211,4 +231,4 @@ Este projeto é de uso interno da Rede de Farmácias Mariano.
 
 ---
 
-**Desenvolvido por Luan S. Sachetti** 
+**Desenvolvido por Luan S. Sachetti**  
