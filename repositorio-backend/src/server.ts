@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import syncController from "./controllers/admin/syncController.js"
 import { syncMarketingToDB } from "./utils/syncMarketingToDB.js";
 
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/api/public", publicAuthRoutes);
 app.use("/api/public", thumbProxyController);
 app.use("/api/public", downloadProxyController);
 app.use("/api/public", marketingController);
+app.use("/api/admin", syncController);
 
 // Rota raiz de teste
 app.get("/", (req, res) => {
