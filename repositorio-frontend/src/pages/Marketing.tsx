@@ -1,5 +1,4 @@
 // src/pages/Marketing.tsx
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { buscarMarketing, MarketingNode } from "../utils/api";
@@ -23,7 +22,7 @@ export default function Marketing() {
     try {
       setCarregando(true);
       const resposta = await buscarMarketing();
-      
+
       if (resposta.sucesso) {
         setCategorias(resposta.categorias);
       } else {
@@ -81,46 +80,18 @@ export default function Marketing() {
             <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
               {categorias.map((categoria) => {
                 const totalArquivos = contarArquivos(categoria);
-                
+
                 return (
-                  <div
+                  <Button
                     key={categoria.id}
+                    label={`📦 ${categoria.name} (${totalArquivos} ${totalArquivos === 1 ? "arquivo" : "arquivos"})`}
                     onClick={() => abrirCategoria(categoria.slug)}
-                    className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5 cursor-pointer hover:bg-white/20 transition-all duration-200 active:scale-95 shadow-md"
-                  >
-                    <div className="flex flex-col items-center gap-3">
-                      {/* Ícone de pasta */}
-                      <div className="bg-white/20 rounded-lg p-3">
-                        <svg
-                          className="w-10 h-10 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-                          />
-                        </svg>
-                      </div>
-
-                      {/* Nome da categoria */}
-                      <h3 className="text-lg font-semibold text-white text-center">
-                        {categoria.name}
-                      </h3>
-
-                      {/* Badge com total de arquivos */}
-                      <span className="bg-orange-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                        {totalArquivos} {totalArquivos === 1 ? 'arquivo' : 'arquivos'}
-                      </span>
-                    </div>
-                  </div>
+                  />
                 );
               })}
             </div>
           )}
+
           <button
             onClick={() => navigate("/menu")}
             className="mt-6 text-sm text-orange-100 underline hover:text-white transition"
